@@ -1,34 +1,61 @@
 package com.millsofmn.schoolplanner;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.millsofmn.schoolplanner.repository.TermRepository;
+import com.millsofmn.schoolplanner.adapter.TermListAdapter;
+import com.millsofmn.schoolplanner.data.Term;
+import com.millsofmn.schoolplanner.viewmodels.TermViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter termAdapter;
-    private RecyclerView.LayoutManager layoutManager;
+    public static final String TAG = "MainActivity";
+
+    private TermViewModel termViewModel;
+
+//    private RecyclerView recyclerView;
+//    private RecyclerView.Adapter termAdapter;
+//    private RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(TAG, "++++++++++++++++++++++++++++");
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // configure recycler view
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        final TermListAdapter termAdapter = new TermListAdapter(this);
+        recyclerView.setAdapter(termAdapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        termViewModel = ViewModelProviders.of(this).get(TermViewModel.class);
+
+        termViewModel.getAllTerms().observe(this, new Observer<List<Term>>() {
+            @Override
+            public void onChanged(List<Term> terms) {
+                termAdapter.setTerms(terms);
+            }
+        });
+
 
         FloatingActionButton fab = findViewById(R.id.fab_new_term);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -39,19 +66,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // configure recycler view
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        termAdapter = new TermAdapter(TermRepository.getTerms());
-
-        ((TermAdapter) termAdapter).setListener((position -> {
-            Intent intent = new Intent(this, TermDetailActivity.class);
-            intent.putExtra(TermDetailActivity.EXTRA_TERM_ID, position);
-            startActivity(intent);
-        }));
-        recyclerView.setAdapter(termAdapter);
+//
+//        ((TermListAdapter) termAdapter).setListener((position -> {
+//            Intent intent = new Intent(this, TermDetailActivity.class);
+//            intent.putExtra(TermDetailActivity.EXTRA_TERM_ID, position);
+//            startActivity(intent);
+//        }));
     }
 
     @Override

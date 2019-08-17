@@ -7,8 +7,8 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.millsofmn.schoolplanner.domain.Term;
-import com.millsofmn.schoolplanner.repository.TermRepository;
+import com.millsofmn.schoolplanner.data.Term;
+import com.millsofmn.schoolplanner.data.TermRepository;
 
 public class TermDetailActivity extends AppCompatActivity {
     public static final String EXTRA_TERM_ID = "termId";
