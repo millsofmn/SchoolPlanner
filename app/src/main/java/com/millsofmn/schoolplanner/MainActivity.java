@@ -1,5 +1,6 @@
 package com.millsofmn.schoolplanner;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -8,6 +9,7 @@ import com.millsofmn.schoolplanner.repository.TermRepository;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab_new_term);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -43,6 +45,12 @@ public class MainActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         termAdapter = new TermAdapter(TermRepository.getTerms());
+
+        ((TermAdapter) termAdapter).setListener((position -> {
+            Intent intent = new Intent(this, TermDetailActivity.class);
+            intent.putExtra(TermDetailActivity.EXTRA_TERM_ID, position);
+            startActivity(intent);
+        }));
         recyclerView.setAdapter(termAdapter);
     }
 
