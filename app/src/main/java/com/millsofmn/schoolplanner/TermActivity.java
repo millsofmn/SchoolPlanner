@@ -1,21 +1,24 @@
 package com.millsofmn.schoolplanner;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
+import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.millsofmn.schoolplanner.data.Term;
 import com.millsofmn.schoolplanner.data.TermRepository;
+import com.millsofmn.schoolplanner.viewmodels.TermListViewModel;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -26,10 +29,7 @@ import java.util.GregorianCalendar;
 public class TermActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     public static final String EXTRA_TERM_ID = "termId";
 
-    private static final DateFormat fmtDate = new SimpleDateFormat("MMM d yyyy");
-
-    private static final int EDIT_MODE_ENABLED = 1;
-    private static final int EDIT_MODE_DISABLED = 0;
+    private static final DateFormat fmtDate = new SimpleDateFormat("MMM d, yyyy");
 
     private EditText editTermTitle;
     private Button editStartDate;
@@ -37,36 +37,38 @@ public class TermActivity extends AppCompatActivity implements DatePickerDialog.
 
     private Button lastButtonPressed;
 
-//    private LinearLayout layoutDateDisplay;
-//    private TextView textStartDate;
-//    private TextView textEndDate;
 
-    private boolean isTermNew;
+    private TermListViewModel termViewModel;
+
     private Term termInitial;
-
-    private int mode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_term);
 
+
+        Toolbar toolbar = findViewById(R.id.content_toolbar);
+        setSupportActionBar(toolbar);
+
+        termViewModel = ViewModelProviders.of(this).get(TermListViewModel.class);
+
         editTermTitle = findViewById(R.id.edit_term_title);
+
         editStartDate = findViewById(R.id.edit_start_date);
+        editStartDate.setOnClickListener(view -> {
+            lastButtonPressed = editStartDate;
+            showDatePickerDialog();
+        });
+
         editEndDate = findViewById(R.id.edit_end_date);
+        editEndDate.setOnClickListener(view -> {
+            lastButtonPressed = editEndDate;
+            showDatePickerDialog();
+        });
 
-//        textTitle = findViewById(R.id.term_text_title);
-//        editTitle = findViewById(R.id.term_edit_title);
-
-//        layoutDateDisplay = findViewById(R.id.term_date_display);
-//        textStartDate = findViewById(R.id.term_text_start);
-//        textEndDate = findViewById(R.id.term_text_end);
-
-        if (getIncomingIntent()) {
-            enableEditMode();
-        } else {
+        if (isIncomingIntent()) {
             setTermProperties();
-            disableEditMode();
         }
 
         FloatingActionButton fab = findViewById(R.id.fab_new_course);
@@ -74,23 +76,31 @@ public class TermActivity extends AppCompatActivity implements DatePickerDialog.
                 .setAction("Action", null).show());
     }
 
-    private void setTermProperties() {
-//        textTitle.setText(termInitial.getTitle());
-//        editTitle.setText(termInitial.getTitle());
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_content, menu);
 
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_save:
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+    private void setTermProperties() {
         editTermTitle.setText(termInitial.getTitle());
 
         editStartDate.setText(fmtDate.format(termInitial.getStartDate()));
-        editStartDate.setOnClickListener(view -> {
-            lastButtonPressed = editStartDate;
-            showDatePickerDialog();
-        });
 
         editEndDate.setText(fmtDate.format(termInitial.getEndDate()));
-        editEndDate.setOnClickListener(view -> {
-            lastButtonPressed = editEndDate;
-            showDatePickerDialog();
-        });
     }
 
     public void showDatePickerDialog() {
@@ -104,39 +114,17 @@ public class TermActivity extends AppCompatActivity implements DatePickerDialog.
         datePickerDialog.show();
     }
 
-    private boolean getIncomingIntent() {
+    private boolean isIncomingIntent() {
+        boolean incomingIntent = false;
         if (getIntent().hasExtra(EXTRA_TERM_ID)) {
 
             int termId = (int) getIntent().getExtras().get(EXTRA_TERM_ID);
 
             termInitial = TermRepository.getTerms().get(termId);
-
-            mode = EDIT_MODE_DISABLED;
-
-            isTermNew = false;
-        } else {
-            mode = EDIT_MODE_ENABLED;
-            isTermNew = true;
+            incomingIntent = true;
         }
-        return isTermNew;
-    }
 
-    private void enableEditMode() {
-//        textTitle.setVisibility(View.GONE);
-//        editTitle.setVisibility(View.VISIBLE);
-//
-//        layoutDateDisplay.setVisibility(View.GONE);
-//        textStartDate.setVisibility(View.GONE);
-//        textEndDate.setVisibility(View.GONE);
-    }
-
-    private void disableEditMode() {
-//        textTitle.setVisibility(View.VISIBLE);
-//        editTitle.setVisibility(View.GONE);
-//
-//        layoutDateDisplay.setVisibility(View.VISIBLE);
-//        textStartDate.setVisibility(View.VISIBLE);
-//        textEndDate.setVisibility(View.VISIBLE);
+        return incomingIntent;
     }
 
     @Override
