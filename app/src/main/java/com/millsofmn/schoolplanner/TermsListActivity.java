@@ -47,7 +47,7 @@ public class TermsListActivity extends AppCompatActivity implements TermsListAda
         initFloatingActionBar();
     }
 
-    private void initRecyclerView(){
+    private void initRecyclerView() {
         final TermsListAdapter termAdapter = new TermsListAdapter(this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
@@ -59,7 +59,7 @@ public class TermsListActivity extends AppCompatActivity implements TermsListAda
         termViewModel.getAllTerms().observe(this, terms -> termAdapter.setTerms(terms));
     }
 
-    private void initFloatingActionBar(){
+    private void initFloatingActionBar() {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,28 +73,31 @@ public class TermsListActivity extends AppCompatActivity implements TermsListAda
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        switch (item.getItemId()) {
+            case R.id.action_create_term:
+                Intent intent = new Intent(this, TermActivity.class);
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+                startActivity(intent);
+                return true;
+            case R.id.action_settings:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
 
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onTermClick(int position) {
-            Intent intent = new Intent(this, TermActivity.class);
-            intent.putExtra(TermActivity.EXTRA_TERM_ID, position);
-            startActivity(intent);
+        Intent intent = new Intent(this, TermActivity.class);
+        intent.putExtra(TermActivity.EXTRA_TERM_ID, position);
+        startActivity(intent);
     }
+
 }
