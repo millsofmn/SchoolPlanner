@@ -29,7 +29,7 @@ public abstract class SchoolPlannerDatabase extends RoomDatabase {
                                     context.getApplicationContext(),
                                     SchoolPlannerDatabase.class,
                                     "school_planner_database")
-                            .addCallback(schoolPlannerDatabaseCallback)
+                            .addCallback(schoolPlannerDatabaseCallback) // todo remove
                             .build();
                 }
             }
@@ -54,11 +54,10 @@ public abstract class SchoolPlannerDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(final Void... params){
-            Log.i(TAG, "+++++++ load db ");
+            Log.i(TAG, "initialize database with data");
             termDao.deleteAll();
 
             for(Term term : TermRepository.getTerms()){
-                System.out.println("++ Insert");
                 termDao.insert(term);
             }
 

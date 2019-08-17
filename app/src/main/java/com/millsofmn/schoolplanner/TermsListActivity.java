@@ -1,16 +1,15 @@
 package com.millsofmn.schoolplanner;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.millsofmn.schoolplanner.adapter.TermListAdapter;
-import com.millsofmn.schoolplanner.data.Term;
-import com.millsofmn.schoolplanner.viewmodels.TermViewModel;
+import com.millsofmn.schoolplanner.adapter.TermsListAdapter;
+import com.millsofmn.schoolplanner.viewmodels.TermListViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,44 +19,47 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.util.List;
+public class TermsListActivity extends AppCompatActivity implements TermsListAdapter.OnTermListener {
 
-public class MainActivity extends AppCompatActivity {
+    public static final String TAG = "TermsListActivity";
 
-    public static final String TAG = "MainActivity";
+    private RecyclerView recyclerView;
+    private FloatingActionButton fab;
 
-    private TermViewModel termViewModel;
-
-//    private RecyclerView recyclerView;
-//    private RecyclerView.Adapter termAdapter;
-//    private RecyclerView.LayoutManager layoutManager;
+    // vars
+    private TermListViewModel termViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "++++++++++++++++++++++++++++");
-        setContentView(R.layout.activity_main);
+        Log.i(TAG, "starting main process");
+        setContentView(R.layout.activity_terms_list);
+
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // configure recycler view
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        final TermListAdapter termAdapter = new TermListAdapter(this);
-        recyclerView.setAdapter(termAdapter);
+        recyclerView = findViewById(R.id.terms_list_recycler_view);
+        initRecyclerView();
+
+        fab = findViewById(R.id.fab_new_term);
+        initFloatingActionBar();
+    }
+
+    private void initRecyclerView(){
+        final TermsListAdapter termAdapter = new TermsListAdapter(this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+
+        recyclerView.setAdapter(termAdapter);
         recyclerView.setLayoutManager(layoutManager);
 
-        termViewModel = ViewModelProviders.of(this).get(TermViewModel.class);
+        termViewModel = ViewModelProviders.of(this).get(TermListViewModel.class);
 
-        termViewModel.getAllTerms().observe(this, new Observer<List<Term>>() {
-            @Override
-            public void onChanged(List<Term> terms) {
-                termAdapter.setTerms(terms);
-            }
-        });
+        termViewModel.getAllTerms().observe(this, terms -> termAdapter.setTerms(terms));
+    }
 
-
-        FloatingActionButton fab = findViewById(R.id.fab_new_term);
+    private void initFloatingActionBar(){
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,13 +67,6 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-//
-//        ((TermListAdapter) termAdapter).setListener((position -> {
-//            Intent intent = new Intent(this, TermDetailActivity.class);
-//            intent.putExtra(TermDetailActivity.EXTRA_TERM_ID, position);
-//            startActivity(intent);
-//        }));
     }
 
     @Override
@@ -94,5 +89,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onTermClick(int position) {
+            Intent intent = new Intent(this, TermActivity.class);
+            intent.putExtra(TermActivity.EXTRA_TERM_ID, position);
+            startActivity(intent);
     }
 }

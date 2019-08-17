@@ -1,15 +1,16 @@
 package com.millsofmn.schoolplanner.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Entity(tableName="term")
-public class Term {
+public class Term implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -41,6 +42,23 @@ public class Term {
         this.endDate = endDate;
     }
 
+    protected Term(Parcel in) {
+        id = in.readInt();
+        title = in.readString();
+    }
+
+    public static final Creator<Term> CREATOR = new Creator<Term>() {
+        @Override
+        public Term createFromParcel(Parcel in) {
+            return new Term(in);
+        }
+
+        @Override
+        public Term[] newArray(int size) {
+            return new Term[size];
+        }
+    };
+
     public int getId() {
         return id;
     }
@@ -71,5 +89,16 @@ public class Term {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(title);
     }
 }

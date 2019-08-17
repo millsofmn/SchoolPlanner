@@ -1,7 +1,7 @@
 package com.millsofmn.schoolplanner.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -17,38 +17,44 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TermListAdapter extends RecyclerView.Adapter<TermListAdapter.TermViewHolder> {
+public class TermsListAdapter extends RecyclerView.Adapter<TermsListAdapter.ViewHolder> {
 
     private static final DateFormat dateFormat = new SimpleDateFormat("MMM yyyy");
 
-    public static class TermViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public CardView cardView;
+        OnTermListener onTermListener;
 
-        public TermViewHolder(@NonNull CardView cardView) {
+        public ViewHolder(@NonNull CardView cardView, OnTermListener onTermListener) {
             super(cardView);
             this.cardView = cardView;
+            this.onTermListener = onTermListener;
+
+            cardView.setOnClickListener(this);
         }
 
-
+        @Override
+        public void onClick(View view) {
+            onTermListener.onTermClick(getAdapterPosition());
+        }
     }
 
-    private final LayoutInflater inflater;
     private List<Term> terms = new ArrayList<>();
-    private Listener listener;
+    private OnTermListener onTermListener;
 
-    public TermListAdapter(Context context) {
-        this.inflater = LayoutInflater.from(context);
+    public TermsListAdapter(OnTermListener onTermListener) {
+        this.onTermListener = onTermListener;
     }
 
     @Override
-    public TermViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-        CardView cardView = (CardView) inflater.inflate(R.layout.term_view_item, parent, false);
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+        CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_term_list_item, parent, false);
 
-        return new TermViewHolder(cardView);
+        return new ViewHolder(cardView, onTermListener);
     }
 
     @Override
-    public void onBindViewHolder(TermViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         CardView cardView = holder.cardView;
 
         TextView termTitle = cardView.findViewById(R.id.term_title);
@@ -57,11 +63,6 @@ public class TermListAdapter extends RecyclerView.Adapter<TermListAdapter.TermVi
         TextView termDates = cardView.findViewById(R.id.term_dates);
         termDates.setText(dateFormat.format(terms.get(position).getStartDate()) + " to " + dateFormat.format(terms.get(position).getEndDate()));
 
-        cardView.setOnClickListener((v) -> {
-            if(listener != null){
-                listener.onClick(position);
-            }
-        });
     }
 
     @Override
@@ -74,12 +75,8 @@ public class TermListAdapter extends RecyclerView.Adapter<TermListAdapter.TermVi
         notifyDataSetChanged();
     }
 
-    public void setListener(Listener listener) {
-        this.listener = listener;
-    }
-
-    interface Listener {
-        void onClick(int position);
+    public interface OnTermListener {
+        void onTermClick(int position);
     }
 }
 
