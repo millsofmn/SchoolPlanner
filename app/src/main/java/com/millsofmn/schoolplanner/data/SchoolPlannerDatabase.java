@@ -11,12 +11,15 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {Term.class}, version = 1)
+@Database(entities = {Term.class, Course.class}, version = 1)
 @TypeConverters({Converters.class})
 public abstract class SchoolPlannerDatabase extends RoomDatabase {
     public static final String TAG = "SchoolPlannerDatabase";
 
+    public abstract CourseDao courseDao();
     public abstract TermDao termDao();
+
+//    public abstract AssessmentDao assessmentDao();
 
     private static volatile  SchoolPlannerDatabase INSTANCE;
 
@@ -47,9 +50,11 @@ public abstract class SchoolPlannerDatabase extends RoomDatabase {
 
     private static class PopulateDbAsync extends AsyncTask<Void, Void, Void>{
         private final TermDao termDao;
+        private final CourseDao courseDao;
 
         public PopulateDbAsync(SchoolPlannerDatabase database){
-            this.termDao = database.termDao();
+            termDao = database.termDao();
+            courseDao = database.courseDao();
         }
 
         @Override
@@ -57,8 +62,12 @@ public abstract class SchoolPlannerDatabase extends RoomDatabase {
             Log.i(TAG, "initialize database with data");
             termDao.deleteAll();
 
-            for(Term term : TermRepository.getTerms()){
+            for(Term term : DatabaseSeed.getTerms()){
                 termDao.insert(term);
+            }
+
+            for(Course course : DatabaseSeed.getCourses()){
+                courseDao.insert(course);
             }
 
             return null;

@@ -39,23 +39,6 @@ public class TermRepository {
         new updateAsyncTask(termDao).execute(term);
     }
 
-    private static Date getDate(int diff) {
-        GregorianCalendar cal = new GregorianCalendar();
-        cal.add(Calendar.MONTH, diff);
-        return cal.getTime();
-    }
-
-    //public Term(int id, String title, Date startDate, Date endDate) {
-    public static List<Term> getTerms(){
-        Log.i(TAG, "get Terms");
-        List<Term> terms = new ArrayList<>();
-        terms.add(new Term(1, "Term 1", getDate(-3), getDate(-2)));
-        terms.add(new Term(2, "Term 2", getDate(-2), getDate(-1)));
-        terms.add(new Term(3, "Term 3", getDate(-1), getDate(0)));
-        terms.add(new Term(4, "Term 4", getDate(0), getDate(1)));
-
-        return terms;
-    }
 
     private static class insertAsyncTask extends AsyncTask<Term, Void, Void> {
         private TermDao asyncTaskDao;
