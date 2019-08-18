@@ -28,6 +28,7 @@ public class TermsListActivity extends AppCompatActivity implements TermsListAda
 
     public static final int ADD_TERM_REQUEST = 1;
     public static final int EDIT_TERM_REQUEST = 2;
+    public static final int DELETE_TERM_REQUEST = 3;
 
     private TermsViewModel termViewModel;
     private RecyclerView recyclerView;
@@ -103,7 +104,7 @@ public class TermsListActivity extends AppCompatActivity implements TermsListAda
     @Override
     public void onTermClick(int position) {
         Intent intent = new Intent(this, TermActivity.class);
-        intent.putExtra(TermActivity.EXTRA_TERM, termAdapter.getSelectedTerm(position));
+        intent.putExtra(TermFragment.EXTRA_TERM, termAdapter.getSelectedTerm(position));
         startActivityForResult(intent, EDIT_TERM_REQUEST);
     }
 
@@ -112,9 +113,9 @@ public class TermsListActivity extends AppCompatActivity implements TermsListAda
         super.onActivityResult(requestCode, resultCode, intent);
 
         if(requestCode == ADD_TERM_REQUEST && resultCode == RESULT_OK){
-            String termTitle = intent.getStringExtra(TermActivity.EXTRA_TERM_TITLE);
-            Long start = intent.getLongExtra(TermActivity.EXTRA_TERM_START_DATE, 0);
-            Long end = intent.getLongExtra(TermActivity.EXTRA_TERM_END_DATE, 0);
+            String termTitle = intent.getStringExtra(TermFragment.EXTRA_TERM_TITLE);
+            Long start = intent.getLongExtra(TermFragment.EXTRA_TERM_START_DATE, 0);
+            Long end = intent.getLongExtra(TermFragment.EXTRA_TERM_END_DATE, 0);
 
             Date startDate = new Date(start);
             Date endDate = new Date(end);
@@ -124,15 +125,15 @@ public class TermsListActivity extends AppCompatActivity implements TermsListAda
             Toast.makeText(this, "New term created.", Toast.LENGTH_SHORT).show();
         } else if(requestCode == EDIT_TERM_REQUEST && resultCode == RESULT_OK){
 
-            int id = intent.getIntExtra(TermActivity.EXTRA_TERM_ID, -1);
+            int id = intent.getIntExtra(TermFragment.EXTRA_TERM_ID, -1);
 
             if(id == -1){
                 Toast.makeText(this, "Term cannot be updated.", Toast.LENGTH_SHORT).show();
                 return;
             }
-            String termTitle = intent.getStringExtra(TermActivity.EXTRA_TERM_TITLE);
-            Long start = intent.getLongExtra(TermActivity.EXTRA_TERM_START_DATE, 0);
-            Long end = intent.getLongExtra(TermActivity.EXTRA_TERM_END_DATE, 0);
+            String termTitle = intent.getStringExtra(TermFragment.EXTRA_TERM_TITLE);
+            Long start = intent.getLongExtra(TermFragment.EXTRA_TERM_START_DATE, 0);
+            Long end = intent.getLongExtra(TermFragment.EXTRA_TERM_END_DATE, 0);
 
             Date startDate = new Date(start);
             Date endDate = new Date(end);
