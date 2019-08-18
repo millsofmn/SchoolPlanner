@@ -12,7 +12,8 @@ import java.util.Date;
         foreignKeys = @ForeignKey(
                 entity = Term.class,
                 parentColumns = "id",
-                childColumns = "term_id"))
+                childColumns = "term_id",
+                onDelete = ForeignKey.CASCADE))
 public class Course {
     enum ProgressStatus{
         PLAN_TO_TAKE(1),

@@ -23,7 +23,7 @@ public class TermsListAdapter extends RecyclerView.Adapter<TermsListAdapter.View
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public CardView cardView;
-        OnTermListener onTermListener;
+        public OnTermListener onTermListener;
 
         public ViewHolder(@NonNull CardView cardView, OnTermListener onTermListener) {
             super(cardView);

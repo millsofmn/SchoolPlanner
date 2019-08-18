@@ -5,9 +5,12 @@ import android.os.Parcelable;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 import java.util.Date;
+
+import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName="term")
 public class Term implements Parcelable {

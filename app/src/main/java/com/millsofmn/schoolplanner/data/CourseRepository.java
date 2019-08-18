@@ -43,6 +43,10 @@ public class CourseRepository {
         new updateAsyncTask(courseDao).execute(course);
     }
 
+    public LiveData<List<Course>> findByTermId(int termId){
+        return courseDao.findByTermId(termId);
+    }
+
     private static class insertAsyncTask extends AsyncTask<Course, Void, Void> {
         private CourseDao asyncTaskDao;
 
