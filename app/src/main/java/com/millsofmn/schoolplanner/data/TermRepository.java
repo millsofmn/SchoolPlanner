@@ -35,6 +35,10 @@ public class TermRepository {
         new deleteAsyncTask(termDao).execute(term);
     }
 
+    public void update(Term term){
+        new updateAsyncTask(termDao).execute(term);
+    }
+
     private static Date getDate(int diff) {
         GregorianCalendar cal = new GregorianCalendar();
         cal.add(Calendar.MONTH, diff);
@@ -66,6 +70,7 @@ public class TermRepository {
             return null;
         }
     }
+
     private static class deleteAsyncTask extends AsyncTask<Term, Void, Void> {
         private TermDao asyncTaskDao;
 
@@ -76,6 +81,19 @@ public class TermRepository {
         @Override
         protected Void doInBackground(final Term... params){
             asyncTaskDao.delete(params[0]);
+            return null;
+        }
+    }
+    private static class updateAsyncTask extends AsyncTask<Term, Void, Void> {
+        private TermDao asyncTaskDao;
+
+        public updateAsyncTask(TermDao termDao) {
+            this.asyncTaskDao = termDao;
+        }
+
+        @Override
+        protected Void doInBackground(final Term... params){
+            asyncTaskDao.update(params[0]);
             return null;
         }
     }

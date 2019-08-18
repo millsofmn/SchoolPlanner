@@ -10,13 +10,13 @@ import com.millsofmn.schoolplanner.data.TermRepository;
 
 import java.util.List;
 
-public class TermListViewModel extends AndroidViewModel {
+public class TermsViewModel extends AndroidViewModel {
 
     private TermRepository repository;
 
     private LiveData<List<Term>> terms;
 
-    public TermListViewModel(Application application){
+    public TermsViewModel(Application application){
         super(application);
         repository = new TermRepository(application);
         terms = repository.getAllTerms();
@@ -31,7 +31,7 @@ public class TermListViewModel extends AndroidViewModel {
     }
 
     public void update(Term term){
-//        repository.update(term);
+        repository.update(term);
     }
 
     public LiveData<List<Term>> getAllTerms(){

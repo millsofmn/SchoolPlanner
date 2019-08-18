@@ -1,5 +1,6 @@
 package com.millsofmn.schoolplanner;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
@@ -19,8 +20,7 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.millsofmn.schoolplanner.data.Term;
-import com.millsofmn.schoolplanner.data.TermRepository;
-import com.millsofmn.schoolplanner.viewmodels.TermListViewModel;
+import com.millsofmn.schoolplanner.viewmodels.TermsViewModel;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -32,10 +32,10 @@ import java.util.GregorianCalendar;
 public class TermActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     public static final String TAG = "TermActivity";
     public static final String EXTRA_TERM = "term";
+    public static final String EXTRA_TERM_ID = "term_id";
     public static final String EXTRA_TERM_TITLE = "term_title";
-    public static final String EXTRA_START_DATE = "start_date";
-    public static final String EXTRA_END_DATE = "end_date";
-
+    public static final String EXTRA_TERM_START_DATE = "term_start_date";
+    public static final String EXTRA_TERM_END_DATE = "term_end_date";
 
     private static final DateFormat fmtDate = new SimpleDateFormat("MMM d, yyyy");
 
@@ -46,7 +46,7 @@ public class TermActivity extends AppCompatActivity implements DatePickerDialog.
     private Button lastButtonPressed;
 
 
-    private TermListViewModel termViewModel;
+    private TermsViewModel termViewModel;
 
     private Term termInitial;
 
@@ -55,11 +55,12 @@ public class TermActivity extends AppCompatActivity implements DatePickerDialog.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_term);
 
-
         Toolbar toolbar = findViewById(R.id.content_toolbar);
         setSupportActionBar(toolbar);
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
 
-        termViewModel = ViewModelProviders.of(this).get(TermListViewModel.class);
+        termViewModel = ViewModelProviders.of(this).get(TermsViewModel.class);
 
         editTermTitle = findViewById(R.id.edit_term_title);
 
@@ -98,7 +99,6 @@ public class TermActivity extends AppCompatActivity implements DatePickerDialog.
         switch (item.getItemId()) {
             case R.id.action_save:
                 saveTerm();
-
                 return true;
             case R.id.action_delete:
                 termViewModel.delete(termInitial);
@@ -122,9 +122,14 @@ public class TermActivity extends AppCompatActivity implements DatePickerDialog.
                 Date endDate = fmtDate.parse(editEndDate.getText().toString());
 
                 Intent intent = new Intent();
+
                 intent.putExtra(EXTRA_TERM_TITLE, termTitle);
-                intent.putExtra(EXTRA_START_DATE, startDate.getTime());
-                intent.putExtra(EXTRA_END_DATE, endDate.getTime());
+                intent.putExtra(EXTRA_TERM_START_DATE, startDate.getTime());
+                intent.putExtra(EXTRA_TERM_END_DATE, endDate.getTime());
+
+                if(termInitial != null){
+                    intent.putExtra(EXTRA_TERM_ID, termInitial.getId());
+                }
 
                 setResult(RESULT_OK, intent);
                 finish();
@@ -136,6 +141,7 @@ public class TermActivity extends AppCompatActivity implements DatePickerDialog.
         Toast.makeText(this, "Please include a term name, start and end date.", Toast.LENGTH_LONG).show();
         }
     }
+
     private void setTermProperties() {
         editTermTitle.setText(termInitial.getTitle());
 

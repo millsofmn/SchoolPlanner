@@ -24,7 +24,6 @@ public class Term implements Parcelable {
     @ColumnInfo(name = "end_date")
     private Date endDate;
 
-//    private List<String> courses = new ArrayList<>();
 
     public Term() {
     }
