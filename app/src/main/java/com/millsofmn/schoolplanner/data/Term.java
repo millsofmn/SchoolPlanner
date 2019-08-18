@@ -45,6 +45,16 @@ public class Term implements Parcelable {
     protected Term(Parcel in) {
         id = in.readInt();
         title = in.readString();
+        if (in.readByte() == 0) {
+            startDate = null;
+        } else {
+            startDate = new Date(in.readLong());
+        }
+        if (in.readByte() == 0) {
+            endDate = null;
+        } else {
+            endDate = new Date(in.readLong());
+        }
     }
 
     public static final Creator<Term> CREATOR = new Creator<Term>() {
@@ -100,5 +110,18 @@ public class Term implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(id);
         parcel.writeString(title);
+        if (startDate == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeLong(startDate.getTime());
+        }
+        if (endDate == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeLong(endDate.getTime());
+        }
     }
+
 }

@@ -2,6 +2,7 @@ package com.millsofmn.schoolplanner.data;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -13,6 +14,9 @@ public interface TermDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Term term);
+
+    @Delete
+    int delete(Term... terms);
 
     @Query("DELETE FROM term")
     void deleteAll();

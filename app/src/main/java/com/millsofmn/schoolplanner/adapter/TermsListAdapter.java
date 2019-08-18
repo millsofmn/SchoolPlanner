@@ -61,7 +61,9 @@ public class TermsListAdapter extends RecyclerView.Adapter<TermsListAdapter.View
         termTitle.setText(terms.get(position).getTitle());
 
         TextView termDates = cardView.findViewById(R.id.term_dates);
-        termDates.setText(dateFormat.format(terms.get(position).getStartDate()) + " to " + dateFormat.format(terms.get(position).getEndDate()));
+        if(terms.get(position).getStartDate() != null){
+            termDates.setText(dateFormat.format(terms.get(position).getStartDate()) + " to " + dateFormat.format(terms.get(position).getEndDate()));
+        }
 
     }
 
@@ -77,6 +79,15 @@ public class TermsListAdapter extends RecyclerView.Adapter<TermsListAdapter.View
 
     public interface OnTermListener {
         void onTermClick(int position);
+    }
+
+    public Term getSelectedTerm(int position){
+        if(!terms.isEmpty()){
+            if(terms.size() > 0){
+                return terms.get(position);
+            }
+        }
+        return null;
     }
 }
 

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.millsofmn.schoolplanner.adapter.TermsListAdapter;
+import com.millsofmn.schoolplanner.data.Term;
 import com.millsofmn.schoolplanner.viewmodels.TermListViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,16 +19,22 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import java.util.Date;
 
 public class TermsListActivity extends AppCompatActivity implements TermsListAdapter.OnTermListener {
 
     public static final String TAG = "TermsListActivity";
+    public static final int ADD_NEW_TERM = 1;
 
+    private TermListViewModel termViewModel;
     private RecyclerView recyclerView;
+
+    private TermsListAdapter termAdapter;
     private FloatingActionButton fab;
 
     // vars
-    private TermListViewModel termViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +42,8 @@ public class TermsListActivity extends AppCompatActivity implements TermsListAda
         Log.i(TAG, "starting main process");
         setContentView(R.layout.activity_terms_list);
 
+
+        termViewModel = ViewModelProviders.of(this).get(TermListViewModel.class);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -48,13 +57,11 @@ public class TermsListActivity extends AppCompatActivity implements TermsListAda
     }
 
     private void initRecyclerView() {
-        final TermsListAdapter termAdapter = new TermsListAdapter(this);
+        termAdapter = new TermsListAdapter(this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
         recyclerView.setAdapter(termAdapter);
         recyclerView.setLayoutManager(layoutManager);
-
-        termViewModel = ViewModelProviders.of(this).get(TermListViewModel.class);
 
         termViewModel.getAllTerms().observe(this, terms -> termAdapter.setTerms(terms));
     }
@@ -83,7 +90,7 @@ public class TermsListActivity extends AppCompatActivity implements TermsListAda
             case R.id.action_create_term:
                 Intent intent = new Intent(this, TermActivity.class);
 
-                startActivity(intent);
+                startActivityForResult(intent, ADD_NEW_TERM);
                 return true;
             case R.id.action_settings:
                 return true;
@@ -96,8 +103,27 @@ public class TermsListActivity extends AppCompatActivity implements TermsListAda
     @Override
     public void onTermClick(int position) {
         Intent intent = new Intent(this, TermActivity.class);
-        intent.putExtra(TermActivity.EXTRA_TERM_ID, position);
+        intent.putExtra(TermActivity.EXTRA_TERM, termAdapter.getSelectedTerm(position));
         startActivity(intent);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent){
+        super.onActivityResult(requestCode, resultCode, intent);
+
+        if(requestCode == ADD_NEW_TERM && resultCode == RESULT_OK){
+            String termTitle = intent.getStringExtra(TermActivity.EXTRA_TERM_TITLE);
+            Long start = intent.getLongExtra(TermActivity.EXTRA_START_DATE, 0);
+            Long end = intent.getLongExtra(TermActivity.EXTRA_END_DATE, 0);
+
+            Date startDate = new Date(start);
+            Date endDate = new Date(end);
+
+            Term newTerm = new Term(termTitle, startDate, endDate);
+            termViewModel.insert(newTerm);
+            Toast.makeText(this, "New term created.", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Term not created.", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

@@ -20,7 +20,7 @@ public abstract class SchoolPlannerDatabase extends RoomDatabase {
 
     private static volatile  SchoolPlannerDatabase INSTANCE;
 
-    static SchoolPlannerDatabase getDatabase(final Context context){
+    public static SchoolPlannerDatabase getInstance(final Context context){
         if(INSTANCE == null){
             synchronized (SchoolPlannerDatabase.class) {
                 if(INSTANCE == null){

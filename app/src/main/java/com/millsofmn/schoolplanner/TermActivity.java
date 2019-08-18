@@ -1,6 +1,5 @@
 package com.millsofmn.schoolplanner;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
@@ -8,11 +7,14 @@ import androidx.lifecycle.ViewModelProviders;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -21,13 +23,19 @@ import com.millsofmn.schoolplanner.data.TermRepository;
 import com.millsofmn.schoolplanner.viewmodels.TermListViewModel;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class TermActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
-    public static final String EXTRA_TERM_ID = "termId";
+    public static final String TAG = "TermActivity";
+    public static final String EXTRA_TERM = "term";
+    public static final String EXTRA_TERM_TITLE = "term_title";
+    public static final String EXTRA_START_DATE = "start_date";
+    public static final String EXTRA_END_DATE = "end_date";
+
 
     private static final DateFormat fmtDate = new SimpleDateFormat("MMM d, yyyy");
 
@@ -67,7 +75,8 @@ public class TermActivity extends AppCompatActivity implements DatePickerDialog.
             showDatePickerDialog();
         });
 
-        if (isIncomingIntent()) {
+
+        if (getIncomingIntent()) {
             setTermProperties();
         }
 
@@ -88,12 +97,44 @@ public class TermActivity extends AppCompatActivity implements DatePickerDialog.
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
+                saveTerm();
+
+                return true;
+            case R.id.action_delete:
+                termViewModel.delete(termInitial);
+                startActivity(new Intent(this, TermsListActivity.class));
 
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+
+    private void saveTerm() {
+        if(!TextUtils.isEmpty(editTermTitle.getText()) ||
+            !TextUtils.isEmpty(editStartDate.getText()) ||
+            !TextUtils.isEmpty(editEndDate.getText())) {
+
+            try {
+                String termTitle = editTermTitle.getText().toString();
+                Date startDate = fmtDate.parse(editStartDate.getText().toString());
+                Date endDate = fmtDate.parse(editEndDate.getText().toString());
+
+                Intent intent = new Intent();
+                intent.putExtra(EXTRA_TERM_TITLE, termTitle);
+                intent.putExtra(EXTRA_START_DATE, startDate.getTime());
+                intent.putExtra(EXTRA_END_DATE, endDate.getTime());
+
+                setResult(RESULT_OK, intent);
+                finish();
+                return;
+            } catch (ParseException e) {
+                e.printStackTrace();
+
+            }
+        Toast.makeText(this, "Please include a term name, start and end date.", Toast.LENGTH_LONG).show();
+        }
     }
     private void setTermProperties() {
         editTermTitle.setText(termInitial.getTitle());
@@ -114,13 +155,11 @@ public class TermActivity extends AppCompatActivity implements DatePickerDialog.
         datePickerDialog.show();
     }
 
-    private boolean isIncomingIntent() {
+    private boolean getIncomingIntent() {
         boolean incomingIntent = false;
-        if (getIntent().hasExtra(EXTRA_TERM_ID)) {
-
-            int termId = (int) getIntent().getExtras().get(EXTRA_TERM_ID);
-
-            termInitial = TermRepository.getTerms().get(termId);
+        if (getIntent().hasExtra(EXTRA_TERM)) {
+            termInitial = getIntent().getParcelableExtra(EXTRA_TERM);
+            Log.i(TAG, termInitial.toString());
             incomingIntent = true;
         }
 

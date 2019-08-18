@@ -1,6 +1,6 @@
 package com.millsofmn.schoolplanner.data;
 
-import android.app.Application;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -17,8 +17,8 @@ public class TermRepository {
     private TermDao termDao;
     private LiveData<List<Term>> terms;
 
-    public TermRepository(Application application) {
-        SchoolPlannerDatabase db = SchoolPlannerDatabase.getDatabase(application);
+    public TermRepository(Context context) {
+        SchoolPlannerDatabase db = SchoolPlannerDatabase.getInstance(context);
         this.termDao = db.termDao();
         terms = this.termDao.getAllTerms();
     }
@@ -31,6 +31,9 @@ public class TermRepository {
         new insertAsyncTask(termDao).execute(term);
     }
 
+    public void delete(Term term){
+        new deleteAsyncTask(termDao).execute(term);
+    }
 
     private static Date getDate(int diff) {
         GregorianCalendar cal = new GregorianCalendar();
@@ -60,6 +63,19 @@ public class TermRepository {
         @Override
         protected Void doInBackground(final Term... params){
             asyncTaskDao.insert(params[0]);
+            return null;
+        }
+    }
+    private static class deleteAsyncTask extends AsyncTask<Term, Void, Void> {
+        private TermDao asyncTaskDao;
+
+        public deleteAsyncTask(TermDao termDao) {
+            this.asyncTaskDao = termDao;
+        }
+
+        @Override
+        protected Void doInBackground(final Term... params){
+            asyncTaskDao.delete(params[0]);
             return null;
         }
     }
