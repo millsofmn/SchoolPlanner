@@ -70,6 +70,10 @@ public class TermActivity extends AppCompatActivity  {
         viewPager.setAdapter(adapter);
     }
 
+    public void setViewPager(int fragmentNumber){
+        viewPager.setCurrentItem(fragmentNumber);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_content, menu);

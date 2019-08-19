@@ -1,24 +1,33 @@
 package com.millsofmn.schoolplanner;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
+import com.millsofmn.schoolplanner.data.Course;
+import com.millsofmn.schoolplanner.viewmodels.CoursesViewModel;
+
+import java.util.Date;
 
 public class CourseActivity extends AppCompatActivity {
 
-    public static final int ADD_COURSE_REQUEST = 1;
-    public static final int EDIT_COURSE_REQUEST = 2;
+
 
     private ViewPager viewPager;
+    private CoursesViewModel coursesViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +39,8 @@ public class CourseActivity extends AppCompatActivity {
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
+
+        coursesViewModel = ViewModelProviders.of(this).get(CoursesViewModel.class);
 
         viewPager = findViewById(R.id.term_pager);
         setupViewPager(viewPager);
@@ -56,4 +67,6 @@ public class CourseActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_content, menu);
         return true;
     }
+
+
 }

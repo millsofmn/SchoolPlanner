@@ -22,6 +22,18 @@ public class CoursesViewModel extends AndroidViewModel {
         courses = repository.getAllCourses();
     }
 
+    public void insert(Course course){
+        repository.insert(course);
+    }
+
+    public void update(Course course){
+        repository.update(course);
+    }
+
+    public void delete(Course course){
+        repository.delete(course);
+    }
+
     public LiveData<List<Course>> getCoursesByTermId(int termId){
         return repository.findByTermId(termId);
     }
