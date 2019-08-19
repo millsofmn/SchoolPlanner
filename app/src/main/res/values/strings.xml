@@ -8,4 +8,12 @@
     <string name="title_activity_courses_list">CoursesListActivity</string>
     <string name="course_fragment">Course Fragment</string>
     <string name="term_fragment">Term Fragment</string>
+    <string name="title_activity_semester">SemesterActivity</string>
+
+    <string-array name="course_statuses">
+        <item>PLAN_TO_TAKE</item>
+        <item>IN_PROGRESS</item>
+        <item>COMPLETED</item>
+        <item>DROPPED</item>
+    </string-array>
 </resources>

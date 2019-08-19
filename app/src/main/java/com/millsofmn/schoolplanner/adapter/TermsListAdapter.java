@@ -21,27 +21,9 @@ public class TermsListAdapter extends RecyclerView.Adapter<TermsListAdapter.View
 
     private static final DateFormat dateFormat = new SimpleDateFormat("MMM yyyy");
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public CardView cardView;
-        public OnTermListener onTermListener;
-
-        public ViewHolder(@NonNull CardView cardView, OnTermListener onTermListener) {
-            super(cardView);
-            this.cardView = cardView;
-            this.onTermListener = onTermListener;
-
-            cardView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            onTermListener.onTermClick(getAdapterPosition());
-        }
-    }
-
     private List<Term> terms = new ArrayList<>();
-    private OnTermListener onTermListener;
 
+    private OnTermListener onTermListener;
     public TermsListAdapter(OnTermListener onTermListener) {
         this.onTermListener = onTermListener;
     }
@@ -77,10 +59,6 @@ public class TermsListAdapter extends RecyclerView.Adapter<TermsListAdapter.View
         notifyDataSetChanged();
     }
 
-    public interface OnTermListener {
-        void onTermClick(int position);
-    }
-
     public Term getSelectedTerm(int position){
         if(!terms.isEmpty()){
             if(terms.size() > 0){
@@ -89,5 +67,25 @@ public class TermsListAdapter extends RecyclerView.Adapter<TermsListAdapter.View
         }
         return null;
     }
-}
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        public CardView cardView;
+        public OnTermListener onTermListener;
+        public ViewHolder(@NonNull CardView cardView, OnTermListener onTermListener) {
+            super(cardView);
+            this.cardView = cardView;
+            this.onTermListener = onTermListener;
+
+            cardView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            onTermListener.onTermClick(getAdapterPosition());
+        }
+    }
+
+    public interface OnTermListener {
+        void onTermClick(int position);
+    }
+}

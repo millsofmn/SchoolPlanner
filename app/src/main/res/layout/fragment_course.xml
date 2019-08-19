@@ -1,16 +1,112 @@
-<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".CourseFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/course_fragment" />
+        android:layout_height="282dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".TermActivity"
+        tools:showIn="@layout/activity_term">
 
 
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="102dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="61dp"
+            android:layout_marginEnd="28dp"
+            android:layout_marginBottom="8dp"
+            android:layout_toStartOf="@+id/et_course_title"
+            android:text="Course Title"
+            app:layout_constraintBottom_toTopOf="@+id/textView3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
+        <EditText
+            android:id="@+id/et_course_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/spinner_course_status"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="4dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="edit_course_title"
+            tools:layout_editor_absoluteX="116dp"
+            tools:layout_editor_absoluteY="61dp" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/spinner_course_status"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="65dp"
+            android:text="Status:"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="32dp" />
+
+        <Spinner
+            android:id="@+id/spinner_course_status"
+            android:layout_width="216dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="48dp"
+            android:layout_marginBottom="129dp"
+            tools:layout_editor_absoluteX="116dp"
+            tools:layout_editor_absoluteY="126dp"
+            android:entries="@array/course_statuses"/>
+
+        <TextView
+            android:id="@+id/text_term_startdate"
+            style="@style/FieldNameText"
+            android:layout_width="85dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="196dp"
+            android:text="Term Dates"
+            android:textAlignment="viewEnd"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <Button
+            android:id="@+id/btn_course_start_date"
+            style="@style/button_date"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="196dp"
+            android:layout_toEndOf="@+id/text_term_startdate"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="224dp"
+            android:layout_marginTop="196dp"
+            android:text="until"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <Button
+            android:id="@+id/btn_course_end_date"
+            style="@style/button_date"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="196dp"
+            android:layout_toEndOf="@+id/textView2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </RelativeLayout>
 </FrameLayout>

@@ -28,7 +28,6 @@ public class TermsListActivity extends AppCompatActivity implements TermsListAda
 
     public static final int ADD_TERM_REQUEST = 1;
     public static final int EDIT_TERM_REQUEST = 2;
-    public static final int DELETE_TERM_REQUEST = 3;
 
     private TermsViewModel termViewModel;
     private RecyclerView recyclerView;
@@ -36,14 +35,11 @@ public class TermsListActivity extends AppCompatActivity implements TermsListAda
     private TermsListAdapter termAdapter;
     private FloatingActionButton fab;
 
-    // vars
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "starting main process");
         setContentView(R.layout.activity_terms_list);
-
 
         termViewModel = ViewModelProviders.of(this).get(TermsViewModel.class);
 
@@ -55,7 +51,7 @@ public class TermsListActivity extends AppCompatActivity implements TermsListAda
         initRecyclerView();
 
         fab = findViewById(R.id.fab_new_term);
-        initFloatingActionBar();
+        fab.setOnClickListener(view -> createNewTerm());
     }
 
     private void initRecyclerView() {
@@ -66,15 +62,6 @@ public class TermsListActivity extends AppCompatActivity implements TermsListAda
         recyclerView.setLayoutManager(layoutManager);
 
         termViewModel.getAllTerms().observe(this, terms -> termAdapter.setTerms(terms));
-    }
-
-    private void initFloatingActionBar() {
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createNewTerm();
-            }
-        });
     }
 
     @Override

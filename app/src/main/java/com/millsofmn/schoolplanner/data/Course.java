@@ -1,5 +1,8 @@
 package com.millsofmn.schoolplanner.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -14,24 +17,7 @@ import java.util.Date;
                 parentColumns = "id",
                 childColumns = "term_id",
                 onDelete = ForeignKey.CASCADE))
-public class Course {
-    enum ProgressStatus{
-        PLAN_TO_TAKE(1),
-        IN_PROGRESS(2),
-        COMPLETED(3),
-        DROPPED(4);
-
-        private final Integer code;
-
-        ProgressStatus(Integer code) {
-            this.code = code;
-        }
-
-        public Integer getCode() {
-            return code;
-        }
-
-    }
+public class Course implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -49,7 +35,7 @@ public class Course {
     private Date endDate;
 
     @ColumnInfo(name = "progress_status")
-    private ProgressStatus status;
+    private String status;
 
 //    private List<String> notes;
 //    private List<Assessment> assessments;
@@ -59,7 +45,7 @@ public class Course {
     public Course() {
     }
 
-    public Course(int termId, String title, Date startDate, Date endDate, ProgressStatus status) {
+    public Course(int termId, String title, Date startDate, Date endDate, String status) {
         this.termId = termId;
         this.title = title;
         this.startDate = startDate;
@@ -67,7 +53,7 @@ public class Course {
         this.status = status;
     }
 
-    public Course(int id, int termId, String title, Date startDate, Date endDate, ProgressStatus status) {
+    public Course(int id, int termId, String title, Date startDate, Date endDate, String status) {
         this.id = id;
         this.termId = termId;
         this.title = title;
@@ -116,11 +102,66 @@ public class Course {
         this.endDate = endDate;
     }
 
-    public ProgressStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(ProgressStatus status) {
+    public void setStatus(String status) {
         this.status = status;
+    }
+
+
+    protected Course(Parcel in) {
+        id = in.readInt();
+        termId = in.readInt();
+        title = in.readString();
+        status = in.readString();
+        if (in.readByte() == 0) {
+            startDate = null;
+        } else {
+            startDate = new Date(in.readLong());
+        }
+        if (in.readByte() == 0) {
+            endDate = null;
+        } else {
+            endDate = new Date(in.readLong());
+        }
+    }
+
+    public static final Creator<Course> CREATOR = new Creator<Course>() {
+        @Override
+        public Course createFromParcel(Parcel in) {
+            return new Course(in);
+        }
+
+        @Override
+        public Course[] newArray(int size) {
+            return new Course[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeInt(termId);
+        parcel.writeString(title);
+        parcel.writeString(status);
+        if (startDate == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeLong(startDate.getTime());
+        }
+        if (endDate == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeLong(endDate.getTime());
+        }
     }
 }

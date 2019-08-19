@@ -67,13 +67,13 @@ public class TermFragment extends Fragment implements DatePickerDialog.OnDateSet
 
         editTermTitle = view.findViewById(R.id.edit_term_title);
 
-        editStartDate = view.findViewById(R.id.edit_start_date);
+        editStartDate = view.findViewById(R.id.term_start_date);
         editStartDate.setOnClickListener(cal -> {
             lastButtonPressed = editStartDate;
             showDatePickerDialog();
         });
 
-        editEndDate = view.findViewById(R.id.edit_end_date);
+        editEndDate = view.findViewById(R.id.term_end_date);
         editEndDate.setOnClickListener(cal -> {
             lastButtonPressed = editEndDate;
             showDatePickerDialog();
@@ -108,6 +108,8 @@ public class TermFragment extends Fragment implements DatePickerDialog.OnDateSet
         if (getActivity().getIntent().hasExtra(EXTRA_TERM)) {
             termInitial = getActivity().getIntent().getParcelableExtra(EXTRA_TERM);
             incomingIntent = true;
+        } else {
+
         }
 
         return incomingIntent;
