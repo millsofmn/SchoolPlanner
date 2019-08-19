@@ -38,7 +38,7 @@
             android:layout_marginEnd="4dp"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="edit_course_title"
+            android:hint="Course Title"
             tools:layout_editor_absoluteX="116dp"
             tools:layout_editor_absoluteY="61dp" />
 
@@ -48,7 +48,8 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/spinner_course_status"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="65dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="0dp"
             android:text="Status:"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -102,7 +103,7 @@
         <Button
             android:id="@+id/btn_course_end_date"
             style="@style/button_date"
-            android:layout_marginStart="13dp"
+            android:layout_marginStart="1dp"
             android:layout_marginTop="196dp"
             android:layout_toEndOf="@+id/textView2"
             app:layout_constraintStart_toStartOf="parent"

@@ -109,7 +109,7 @@ public class TermsListActivity extends AppCompatActivity implements TermsListAda
 
             Term newTerm = new Term(termTitle, startDate, endDate);
             termViewModel.insert(newTerm);
-            Toast.makeText(this, "New term created.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "New Term Created", Toast.LENGTH_SHORT).show();
         } else if(requestCode == EDIT_TERM_REQUEST && resultCode == RESULT_OK){
 
             int id = intent.getIntExtra(TermFragment.EXTRA_TERM_ID, -1);
@@ -127,6 +127,8 @@ public class TermsListActivity extends AppCompatActivity implements TermsListAda
 
             Term newTerm = new Term(id, termTitle, startDate, endDate);
             termViewModel.update(newTerm);
+            Toast.makeText(this, "Term Updated", Toast.LENGTH_SHORT).show();
+
         } else {
             Toast.makeText(this, "Term not created.", Toast.LENGTH_SHORT).show();
         }

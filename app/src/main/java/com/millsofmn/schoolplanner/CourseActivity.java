@@ -49,15 +49,15 @@ public class CourseActivity extends AppCompatActivity {
         TabLayout tabLayout = findViewById(R.id.tab_term_layout);
         tabLayout.setupWithViewPager(viewPager);
 
-//        FloatingActionButton fab = findViewById(R.id.fab_new_course);
-//        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null).show());
     }
 
     private void setupViewPager(ViewPager viewPager) {
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
         adapter.addFragment(new CourseFragment(), "Course");
-        adapter.addFragment(new Fragment(), "Assessments");
+
+        if(getIntent().hasExtra(CourseFragment.EXTRA_COURSE)){
+            adapter.addFragment(new Fragment(), "Assessments");
+        }
 
         viewPager.setAdapter(adapter);
     }

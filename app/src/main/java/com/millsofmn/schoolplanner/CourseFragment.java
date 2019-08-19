@@ -1,6 +1,7 @@
 package com.millsofmn.schoolplanner;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -15,8 +16,10 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -39,7 +42,7 @@ import java.util.GregorianCalendar;
 import static android.app.Activity.RESULT_OK;
 
 
-public class CourseFragment extends Fragment  implements DatePickerDialog.OnDateSetListener {
+public class CourseFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
     public static final String TAG = "++++ Course Fragment";
     private static final DateFormat fmtDate = new SimpleDateFormat("MMM d, yyyy");
@@ -62,6 +65,7 @@ public class CourseFragment extends Fragment  implements DatePickerDialog.OnDate
     private ArrayAdapter<CharSequence> spinnerAdapter;
 
     private Button lastButtonPressed;
+
     public CourseFragment() {
         // Required empty public constructor
     }
@@ -70,6 +74,15 @@ public class CourseFragment extends Fragment  implements DatePickerDialog.OnDate
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_course, container, false);
+
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                in.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                return false;
+            }
+        });
 
         editTextCourseTitle = view.findViewById(R.id.et_course_title);
         buttonStartDate = view.findViewById(R.id.btn_course_start_date);
@@ -115,10 +128,9 @@ public class CourseFragment extends Fragment  implements DatePickerDialog.OnDate
 
     private boolean getIncomingIntent() {
         boolean incomingIntent = false;
-        if (getActivity().getIntent().hasExtra(EXTRA_COURSE)) {
-            Log.i(TAG,"+++++ ");
-            thisTerm = getActivity().getIntent().getParcelableExtra(TermFragment.EXTRA_TERM);
+        thisTerm = getActivity().getIntent().getParcelableExtra(TermFragment.EXTRA_TERM);
 
+        if (getActivity().getIntent().hasExtra(EXTRA_COURSE)) {
             thisCourse = getActivity().getIntent().getParcelableExtra(EXTRA_COURSE);
             incomingIntent = true;
         } else {
@@ -170,7 +182,7 @@ public class CourseFragment extends Fragment  implements DatePickerDialog.OnDate
     }
 
     private void saveCourse() {
-        Log.i(TAG, "title="+editTextCourseTitle.getText() +
+        Log.i(TAG, "title=" + editTextCourseTitle.getText() +
                 " start=" + buttonStartDate.getText() +
                 " end=" + buttonEndDate.getText() +
                 " term=" + thisTerm);
@@ -207,7 +219,7 @@ public class CourseFragment extends Fragment  implements DatePickerDialog.OnDate
 
             }
         }
-        Toast.makeText(getActivity(), "Please include a term name, start and end date.", Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), "Please include a course name, start and end date.", Toast.LENGTH_LONG).show();
     }
 
     @Override

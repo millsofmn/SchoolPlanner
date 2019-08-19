@@ -61,7 +61,7 @@ public class TermActivity extends AppCompatActivity  {
 
     private void setupViewPager(ViewPager viewPager) {
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
-        adapter.addFragment(new TermFragment(), "Term");
+        adapter.addFragment(new TermFragment(), "Term Detail");
 
         if(getIntent().hasExtra(TermFragment.EXTRA_TERM)){
             adapter.addFragment(new CourseListFragment(), "Courses");
