@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
-import com.millsofmn.schoolplanner.viewmodels.CoursesViewModel;
+import com.millsofmn.schoolplanner.viewmodel.CoursesViewModel;
 
 public class CourseActivity extends AppCompatActivity {
 

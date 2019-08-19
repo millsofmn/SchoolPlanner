@@ -10,7 +10,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.millsofmn.schoolplanner.R;
-import com.millsofmn.schoolplanner.data.domain.Course;
+import com.millsofmn.schoolplanner.db.entity.Course;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

@@ -5,8 +5,8 @@ import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.millsofmn.schoolplanner.adapter.TermsListAdapter;
-import com.millsofmn.schoolplanner.data.domain.Term;
-import com.millsofmn.schoolplanner.viewmodels.TermsViewModel;
+import com.millsofmn.schoolplanner.db.entity.Term;
+import com.millsofmn.schoolplanner.viewmodel.TermsViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;

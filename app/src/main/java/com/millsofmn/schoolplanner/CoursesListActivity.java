@@ -1,18 +1,14 @@
 package com.millsofmn.schoolplanner;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.millsofmn.schoolplanner.adapter.CoursesListAdapter;
-import com.millsofmn.schoolplanner.viewmodels.CoursesViewModel;
+import com.millsofmn.schoolplanner.viewmodel.CoursesViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
 import android.view.MenuItem;
