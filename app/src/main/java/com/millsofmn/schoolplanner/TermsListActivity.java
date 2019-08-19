@@ -4,9 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.millsofmn.schoolplanner.adapter.TermsListAdapter;
-import com.millsofmn.schoolplanner.data.Term;
+import com.millsofmn.schoolplanner.data.domain.Term;
 import com.millsofmn.schoolplanner.viewmodels.TermsViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;

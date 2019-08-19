@@ -1,50 +1,54 @@
-package com.millsofmn.schoolplanner.data;
+package com.millsofmn.schoolplanner.data.repository;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import com.millsofmn.schoolplanner.data.SchoolPlannerDatabase;
+import com.millsofmn.schoolplanner.data.dao.TermDao;
+import com.millsofmn.schoolplanner.data.domain.Term;
+
 import java.util.List;
 
 public class TermRepository {
     public static final String TAG = "TermRepository";
-    private TermDao termDao;
-    private LiveData<List<Term>> terms;
 
-    public TermRepository(Context context) {
+    private LiveData<List<Term>> all;
+
+    private TermDao dao;
+
+    public TermRepository(Context context){
         SchoolPlannerDatabase db = SchoolPlannerDatabase.getInstance(context);
-        this.termDao = db.termDao();
-        terms = this.termDao.getAllTerms();
+        dao = db.termDao();
+        all = dao.getAll();
     }
 
-    public LiveData<List<Term>> getAllTerms(){
-        return terms;
+    public void insert(Term entity) {
+        new insertAsyncTask(dao).execute(entity);
     }
 
-    public void insert(Term term) {
-        new insertAsyncTask(termDao).execute(term);
+    public void delete(Term entity){
+        new deleteAsyncTask(dao).execute(entity);
     }
 
-    public void delete(Term term){
-        new deleteAsyncTask(termDao).execute(term);
+    public void update(Term entity){
+        new updateAsyncTask(dao).execute(entity);
     }
 
-    public void update(Term term){
-        new updateAsyncTask(termDao).execute(term);
+    public Term findById(int id){
+        return dao.findById(id);
     }
 
+    public LiveData<List<Term>> findAll() {
+        return all;
+    }
 
     private static class insertAsyncTask extends AsyncTask<Term, Void, Void> {
         private TermDao asyncTaskDao;
 
-        public insertAsyncTask(TermDao termDao) {
-            this.asyncTaskDao = termDao;
+        public insertAsyncTask(TermDao dao) {
+            this.asyncTaskDao = dao;
         }
 
         @Override
@@ -57,8 +61,8 @@ public class TermRepository {
     private static class deleteAsyncTask extends AsyncTask<Term, Void, Void> {
         private TermDao asyncTaskDao;
 
-        public deleteAsyncTask(TermDao termDao) {
-            this.asyncTaskDao = termDao;
+        public deleteAsyncTask(TermDao dao) {
+            this.asyncTaskDao = dao;
         }
 
         @Override
@@ -70,8 +74,8 @@ public class TermRepository {
     private static class updateAsyncTask extends AsyncTask<Term, Void, Void> {
         private TermDao asyncTaskDao;
 
-        public updateAsyncTask(TermDao termDao) {
-            this.asyncTaskDao = termDao;
+        public updateAsyncTask(TermDao dao) {
+            this.asyncTaskDao = dao;
         }
 
         @Override

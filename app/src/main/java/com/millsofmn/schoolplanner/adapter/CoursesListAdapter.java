@@ -1,6 +1,5 @@
 package com.millsofmn.schoolplanner.adapter;
 
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.millsofmn.schoolplanner.CourseFragment;
-import com.millsofmn.schoolplanner.CoursesListActivity;
 import com.millsofmn.schoolplanner.R;
-import com.millsofmn.schoolplanner.data.Course;
+import com.millsofmn.schoolplanner.data.domain.Course;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

@@ -1,16 +1,13 @@
-package com.millsofmn.schoolplanner.data;
+package com.millsofmn.schoolplanner.data.domain;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 import java.util.Date;
-
-import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName="term")
 public class Term implements Parcelable {
@@ -71,6 +68,51 @@ public class Term implements Parcelable {
         }
     };
 
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(title);
+        if (startDate == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeLong(startDate.getTime());
+        }
+        if (endDate == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeLong(endDate.getTime());
+        }
+    }
+
+    public Term id(int id) {
+        this.id = id;
+        return this;
+    }
+
+    public Term title(String title) {
+        this.title = title;
+        return this;
+    }
+
+    public Term startDate(Date startDate) {
+        this.startDate = startDate;
+        return this;
+    }
+
+    public Term endDate(Date endDate) {
+        this.endDate = endDate;
+        return this;
+    }
+
+
     public int getId() {
         return id;
     }
@@ -102,28 +144,4 @@ public class Term implements Parcelable {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(id);
-        parcel.writeString(title);
-        if (startDate == null) {
-            parcel.writeByte((byte) 0);
-        } else {
-            parcel.writeByte((byte) 1);
-            parcel.writeLong(startDate.getTime());
-        }
-        if (endDate == null) {
-            parcel.writeByte((byte) 0);
-        } else {
-            parcel.writeByte((byte) 1);
-            parcel.writeLong(endDate.getTime());
-        }
-    }
-
 }

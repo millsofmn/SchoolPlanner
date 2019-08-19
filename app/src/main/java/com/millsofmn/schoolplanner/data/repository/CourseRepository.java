@@ -1,57 +1,54 @@
-package com.millsofmn.schoolplanner.data;
+package com.millsofmn.schoolplanner.data.repository;
 
 import android.content.Context;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+
+import com.millsofmn.schoolplanner.data.dao.CourseDao;
+import com.millsofmn.schoolplanner.data.SchoolPlannerDatabase;
+import com.millsofmn.schoolplanner.data.domain.Course;
 
 import java.util.List;
 
 public class CourseRepository {
     public static final String TAG = "CourseRepository";
 
-    private MutableLiveData<List<Course>> searchResult = new MutableLiveData<>();
-    private LiveData<List<Course>> allCourses;
+    private LiveData<List<Course>> all;
 
-    private CourseDao courseDao;
+    private CourseDao dao;
 
     public CourseRepository(Context context){
         SchoolPlannerDatabase db = SchoolPlannerDatabase.getInstance(context);
-        courseDao = db.courseDao();
-        allCourses = courseDao.getAll();
+        dao = db.courseDao();
+        all = dao.getAll();
     }
 
-    public MutableLiveData<List<Course>> getSearchResult() {
-        return searchResult;
+    public void insert(Course entity) {
+        new insertAsyncTask(dao).execute(entity);
     }
 
-    public LiveData<List<Course>> getAllCourses() {
-        return allCourses;
+    public void delete(Course entity){
+        new deleteAsyncTask(dao).execute(entity);
     }
 
-
-    public void insert(Course course) {
-        new insertAsyncTask(courseDao).execute(course);
+    public void update(Course entity){
+        new updateAsyncTask(dao).execute(entity);
     }
 
-    public void delete(Course course){
-        new deleteAsyncTask(courseDao).execute(course);
-    }
-
-    public void update(Course course){
-        new updateAsyncTask(courseDao).execute(course);
+    public LiveData<List<Course>> findAll() {
+        return all;
     }
 
     public LiveData<List<Course>> findByTermId(int termId){
-        return courseDao.findByTermId(termId);
+        return dao.findByTermId(termId);
     }
 
     private static class insertAsyncTask extends AsyncTask<Course, Void, Void> {
         private CourseDao asyncTaskDao;
 
-        public insertAsyncTask(CourseDao courseDao) {
-            this.asyncTaskDao = courseDao;
+        public insertAsyncTask(CourseDao dao) {
+            this.asyncTaskDao = dao;
         }
 
         @Override
@@ -64,8 +61,8 @@ public class CourseRepository {
     private static class deleteAsyncTask extends AsyncTask<Course, Void, Void> {
         private CourseDao asyncTaskDao;
 
-        public deleteAsyncTask(CourseDao courseDao) {
-            this.asyncTaskDao = courseDao;
+        public deleteAsyncTask(CourseDao dao) {
+            this.asyncTaskDao = dao;
         }
 
         @Override
@@ -77,8 +74,8 @@ public class CourseRepository {
     private static class updateAsyncTask extends AsyncTask<Course, Void, Void> {
         private CourseDao asyncTaskDao;
 
-        public updateAsyncTask(CourseDao courseDao) {
-            this.asyncTaskDao = courseDao;
+        public updateAsyncTask(CourseDao dao) {
+            this.asyncTaskDao = dao;
         }
 
         @Override

@@ -1,4 +1,4 @@
-package com.millsofmn.schoolplanner.data;
+package com.millsofmn.schoolplanner.data.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -7,6 +7,8 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
+
+import com.millsofmn.schoolplanner.data.domain.Term;
 
 import java.util.List;
 
@@ -25,6 +27,9 @@ public interface TermDao {
     @Query("DELETE FROM term")
     void deleteAll();
 
-    @Query("SELECT * FROM term ORDER BY title ASC")
-    LiveData<List<Term>> getAllTerms();
+    @Query("SELECT * FROM term ORDER BY start_date ASC")
+    LiveData<List<Term>> getAll();
+
+    @Query("SELECT * FROM term WHERE id = :id")
+    Term findById(int id);
 }

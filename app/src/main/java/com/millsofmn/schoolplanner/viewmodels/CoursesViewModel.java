@@ -6,8 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.millsofmn.schoolplanner.data.Course;
-import com.millsofmn.schoolplanner.data.CourseRepository;
+import com.millsofmn.schoolplanner.data.domain.Course;
+import com.millsofmn.schoolplanner.data.repository.CourseRepository;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class CoursesViewModel extends AndroidViewModel {
     public CoursesViewModel(@NonNull Application application) {
         super(application);
         repository = new CourseRepository(application);
-        courses = repository.getAllCourses();
+        courses = repository.findAll();
     }
 
     public void insert(Course course){

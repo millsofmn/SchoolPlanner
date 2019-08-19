@@ -1,4 +1,4 @@
-package com.millsofmn.schoolplanner.data;
+package com.millsofmn.schoolplanner.data.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -8,19 +8,21 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.millsofmn.schoolplanner.data.domain.Course;
+
 import java.util.List;
 
 @Dao
 public interface CourseDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(Course... courses);
+    void insert(Course... entity);
 
     @Update
-    int update(Course... courses);
+    int update(Course... entity);
 
     @Delete
-    int delete(Course... courses);
+    int delete(Course... entity);
 
     @Query("SELECT * FROM course")
     LiveData<List<Course>> getAll();

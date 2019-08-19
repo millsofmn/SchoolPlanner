@@ -16,4 +16,8 @@
         <item>COMPLETED</item>
         <item>DROPPED</item>
     </string-array>
+    <string-array name="assessment_types">
+        <item>OBJECTIVE</item>
+        <item>PERFORMANCE</item>
+    </string-array>
 </resources>

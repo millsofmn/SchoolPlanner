@@ -24,7 +24,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.millsofmn.schoolplanner.data.Term;
+import com.millsofmn.schoolplanner.data.domain.Term;
 import com.millsofmn.schoolplanner.viewmodels.TermsViewModel;
 
 import java.text.DateFormat;

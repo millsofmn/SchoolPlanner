@@ -16,21 +16,18 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.millsofmn.schoolplanner.adapter.CoursesListAdapter;
-import com.millsofmn.schoolplanner.data.Course;
-import com.millsofmn.schoolplanner.data.Term;
+import com.millsofmn.schoolplanner.data.domain.Course;
+import com.millsofmn.schoolplanner.data.domain.Term;
 import com.millsofmn.schoolplanner.viewmodels.CoursesViewModel;
 
 import java.util.Date;
 
 import static android.app.Activity.RESULT_OK;
-import static android.content.Context.INPUT_METHOD_SERVICE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -127,7 +124,14 @@ public static final String TAG = "++--CourseListFragment";
             Date startDate = new Date(start);
             Date endDate = new Date(end);
 
-            Course newCourse = new Course(courseId, termId, title, startDate, endDate, status);
+            Course newCourse = new Course()
+                    .id(courseId)
+                    .termId(termId)
+                    .title(title)
+                    .startDate(startDate)
+                    .endDate(endDate)
+                    .status(status);
+
             coursesViewModel.update(newCourse);
             Toast.makeText(getActivity(), "Course Updated.", Toast.LENGTH_SHORT).show();
 
@@ -147,7 +151,12 @@ public static final String TAG = "++--CourseListFragment";
             Date startDate = new Date(start);
             Date endDate = new Date(end);
 
-            Course newCourse = new Course(termId, title, startDate, endDate, status);
+            Course newCourse = new Course()
+                    .termId(termId)
+                    .title(title)
+                    .startDate(startDate)
+                    .endDate(endDate)
+                    .status(status);
             coursesViewModel.insert(newCourse);
             Toast.makeText(getActivity(), "Course Created", Toast.LENGTH_SHORT).show();
 

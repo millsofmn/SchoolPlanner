@@ -27,9 +27,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.millsofmn.schoolplanner.adapter.TermsListAdapter;
-import com.millsofmn.schoolplanner.data.Course;
-import com.millsofmn.schoolplanner.data.Term;
+import com.millsofmn.schoolplanner.data.domain.Course;
+import com.millsofmn.schoolplanner.data.domain.Term;
 import com.millsofmn.schoolplanner.viewmodels.CoursesViewModel;
 
 import java.text.DateFormat;
