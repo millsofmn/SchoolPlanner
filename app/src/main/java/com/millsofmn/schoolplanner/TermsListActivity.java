@@ -2,11 +2,10 @@ package com.millsofmn.schoolplanner;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.millsofmn.schoolplanner.adapter.TermsListAdapter;
-import com.millsofmn.schoolplanner.db.entity.Term;
-import com.millsofmn.schoolplanner.viewmodel.TermsViewModel;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -14,10 +13,10 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.millsofmn.schoolplanner.adapter.TermsListAdapter;
+import com.millsofmn.schoolplanner.db.entity.Term;
+import com.millsofmn.schoolplanner.viewmodel.TermsViewModel;
 
 import java.util.Date;
 
@@ -59,7 +58,7 @@ public class TermsListActivity extends AppCompatActivity implements TermsListAda
         recyclerView.setAdapter(termAdapter);
         recyclerView.setLayoutManager(layoutManager);
 
-        termViewModel.getAllTerms().observe(this, terms -> termAdapter.setTerms(terms));
+        termViewModel.getAllTerms().observe(this, terms -> termAdapter.setData(terms));
     }
 
     @Override

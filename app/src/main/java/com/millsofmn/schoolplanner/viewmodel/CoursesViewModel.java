@@ -14,6 +14,7 @@ import java.util.List;
 public class CoursesViewModel extends AndroidViewModel {
 
     private CourseRepository repository;
+
     private LiveData<List<Course>> courses;
 
     public CoursesViewModel(@NonNull Application application) {
@@ -34,6 +35,9 @@ public class CoursesViewModel extends AndroidViewModel {
         repository.delete(course);
     }
 
+    public LiveData<List<Course>> getAll(){
+        return courses;
+    }
     public LiveData<List<Course>> getCoursesByTermId(int termId){
         return repository.findByTermId(termId);
     }

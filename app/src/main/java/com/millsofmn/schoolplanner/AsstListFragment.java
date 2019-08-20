@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,8 +19,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.millsofmn.schoolplanner.adapter.AssessmentAdapter;
+import com.millsofmn.schoolplanner.db.entity.Assessment;
 import com.millsofmn.schoolplanner.db.entity.Course;
 import com.millsofmn.schoolplanner.viewmodel.AssessmentViewModel;
+
+import java.util.Date;
+
+import static android.app.Activity.RESULT_OK;
 
 
 public class AsstListFragment extends Fragment implements AssessmentAdapter.OnClickListener {
@@ -38,6 +44,8 @@ public class AsstListFragment extends Fragment implements AssessmentAdapter.OnCl
     public static AsstListFragment newInstance() {
         return new AsstListFragment();
     }
+
+    private Course thisCourse;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,24 +84,75 @@ public class AsstListFragment extends Fragment implements AssessmentAdapter.OnCl
         assessmentViewModel = ViewModelProviders.of(this).get(AssessmentViewModel.class);
 
 
-        Course thisCourse = getActivity().getIntent().getParcelableExtra(CourseFragment.EXTRA_COURSE);
+        thisCourse = getActivity().getIntent().getParcelableExtra(CourseFragment.EXTRA_COURSE);
 
         assessmentViewModel.findByCourseId(thisCourse.getId()).observe(this,
-                assessments -> assessmentAdapter.setAssessmentList(assessments));
+                assessments -> assessmentAdapter.setData(assessments));
     }
 
 
     private void createNewAsst(){
-        Course thisCourse = getActivity().getIntent().getParcelableExtra(CourseFragment.EXTRA_COURSE);
-        Intent intent = new Intent(getActivity(), CourseActivity.class);
-        intent.putExtra(TermFragment.EXTRA_TERM, thisCourse);
+        Intent intent = new Intent(getActivity(), AsstActivity.class);
+        intent.putExtra(AsstFragment.EXTRA_ASST_COURSE, thisCourse);
+
         startActivityForResult(intent, ADD_ASST_REQUEST);
     }
 
     @Override
     public void onClick(int position) {
         Log.i(TAG, "Fragment pos = " + position + " id=" + assessmentAdapter.getItemId(position));
-        Course thisCourse = getActivity().getIntent().getParcelableExtra(CourseFragment.EXTRA_COURSE);
+        Intent intent = new Intent(getActivity(), AsstActivity.class);
+        intent.putExtra(AsstFragment.EXTRA_ASST, assessmentAdapter.getItem(position));
+        intent.putExtra(AsstFragment.EXTRA_ASST_COURSE, thisCourse);
 
+        startActivityForResult(intent, EDIT_ASST_REQUEST);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if((requestCode == EDIT_ASST_REQUEST || requestCode == ADD_ASST_REQUEST) && resultCode == RESULT_OK){
+
+            int courseId = data.getIntExtra(AsstFragment.EXTRA_ASST_COURSE_ID, -1);
+
+            if(courseId == -1){
+                Toast.makeText(getActivity(), "Assessment Can Not Be Created", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            int asstId = data.getIntExtra(AsstFragment.EXTRA_ASST_ID, -1);
+            String title = data.getStringExtra(AsstFragment.EXTRA_ASST_TITLE);
+            String type = data.getStringExtra(AsstFragment.EXTRA_ASST_TYPE);
+            Long date = data.getLongExtra(AsstFragment.EXTRA_ASST_DUE_DATE, -1);
+            boolean alert = data.getBooleanExtra(AsstFragment.EXTRA_ASST_ALERT, false);
+
+            Date alertDate = null;
+            if(date > 0){
+                alertDate = new Date(date);
+            }
+
+            Assessment assessment = new Assessment()
+                    .title(title)
+                    .performanceType(type)
+                    .courseId(courseId)
+                    .dueDate(alertDate)
+                    .alertOnDueDate(alert);
+
+            String msg = "";
+
+            if(asstId != -1){
+                assessment.setId(asstId);
+                assessmentViewModel.update(assessment);
+                msg = "Assessment Created";
+            } else {
+                assessmentViewModel.insert(assessment);
+                msg = "Assessment Created";
+            }
+            Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getActivity(), "Oh No!", Toast.LENGTH_SHORT).show();
+
+        }
     }
 }

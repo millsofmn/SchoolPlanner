@@ -2,8 +2,14 @@ package com.millsofmn.schoolplanner;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,22 +20,29 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.millsofmn.schoolplanner.db.entity.Assessment;
 import com.millsofmn.schoolplanner.db.entity.Course;
+import com.millsofmn.schoolplanner.viewmodel.AssessmentViewModel;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import static android.app.Activity.RESULT_OK;
+
 public class AsstFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
     public static final String TAG = "++++++AssessmentFragment";
     private static final DateFormat fmtDate = new SimpleDateFormat("MMM d, yyyy");
 
+    public static final String EXTRA_ASST_COURSE = "asst_course";
     public static final String EXTRA_ASST = "asst";
     public static final String EXTRA_ASST_ID = "asst_id";
     public static final String EXTRA_ASST_COURSE_ID = "asst_course_id";
@@ -38,6 +51,7 @@ public class AsstFragment extends Fragment implements DatePickerDialog.OnDateSet
     public static final String EXTRA_ASST_DUE_DATE = "asst_due_date";
     public static final String EXTRA_ASST_ALERT = "asst_alert";
 
+    private Assessment thisAsst;
     private Course thisCourse;
 
     private EditText editTextAsstTitle;
@@ -45,48 +59,15 @@ public class AsstFragment extends Fragment implements DatePickerDialog.OnDateSet
     private Button buttonAsstDueDate;
     private CheckBox checkBoxAsstAlert;
     private ArrayAdapter<CharSequence> spinnerAdapter;
-    private Assessment thisAsst;
-
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-//    private static final String ARG_PARAM1 = "param1";
-//    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-//    private String mParam1;
-//    private String mParam2;
-
-//    private OnFragmentInteractionListener mListener;
 
     public AsstFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment AsstFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-//    public static AsstFragment newInstance(String param1, String param2) {
-    public static AsstFragment newInstance() {
-        AsstFragment fragment = new AsstFragment();
-        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-//        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -110,32 +91,50 @@ public class AsstFragment extends Fragment implements DatePickerDialog.OnDateSet
         buttonAsstDueDate.setOnClickListener(cal -> {
             showDatePickerDialog();
         });
+
         spinAsstType = view.findViewById(R.id.sp_asst_type);
-        spinnerAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.course_statuses, R.layout.support_simple_spinner_dropdown_item);
-        spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);;
+
+        spinnerAdapter = ArrayAdapter.createFromResource(
+                getActivity(),
+                R.array.assessment_types,
+                R.layout.support_simple_spinner_dropdown_item);
+        spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        ;
         spinAsstType.setAdapter(spinnerAdapter);
 
-        if(isIncomingIntent()){
+        if (getIncomingIntent()) {
             setProperties();
         }
 
         return view;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_content, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
     private void setProperties() {
         editTextAsstTitle.setText(thisAsst.getTitle());
-        buttonAsstDueDate.setText(fmtDate.format(thisAsst.getDueDate()));
+
+        if (thisAsst.getDueDate() != null) {
+            buttonAsstDueDate.setText(fmtDate.format(thisAsst.getDueDate()));
+        } else {
+            buttonAsstDueDate.setText("Not Scheduled");
+        }
         checkBoxAsstAlert.setChecked(thisAsst.isAlertOnDueDate());
         spinAsstType.setSelection(spinnerAdapter.getPosition(thisAsst.getPerformanceType()));
     }
 
-    private boolean isIncomingIntent() {
+    private boolean getIncomingIntent() {
 
-        thisCourse = getActivity().getIntent().getParcelableExtra(CourseFragment.EXTRA_COURSE);
+        thisCourse = getActivity().getIntent().getParcelableExtra(AsstFragment.EXTRA_ASST_COURSE);
 
-        if(getActivity().getIntent().hasExtra(EXTRA_ASST)){
+        if (getActivity().getIntent().hasExtra(EXTRA_ASST)) {
             thisAsst = getActivity().getIntent().getParcelableExtra(EXTRA_ASST);
         }
+
         return thisAsst == null ? false : true;
     }
 
@@ -156,42 +155,66 @@ public class AsstFragment extends Fragment implements DatePickerDialog.OnDateSet
         buttonAsstDueDate.setText(fmtDate.format(date));
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-//    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
-//    }
 
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_save:
+                saveAsst();
+                return true;
+            case R.id.action_delete:
+                deleteAsst();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        mListener = null;
-//    }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-//    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-//        void onFragmentInteraction(Uri uri);
-//    }
+    private void deleteAsst() {
+        if (thisCourse != null) {
+            AssessmentViewModel viewModel = ViewModelProviders.of(this).get(AssessmentViewModel.class);
+            viewModel.delete(thisAsst);
+            Intent intent = new Intent(getActivity(), CourseActivity.class);
+
+            intent.putExtra(CourseFragment.EXTRA_COURSE, thisCourse);
+            startActivity(intent);
+
+        }
+    }
+
+    private void saveAsst() {
+        Log.i(TAG, "saving");
+
+        if (!TextUtils.isEmpty(editTextAsstTitle.getText()) && thisCourse != null) {
+            Log.i(TAG, "I'm in here");
+
+            String asstTitle = editTextAsstTitle.getText().toString();
+            String asstType = spinAsstType.getSelectedItem().toString();
+            boolean asstAlert = checkBoxAsstAlert.isSelected();
+
+            Date dueDate;
+            try {
+                dueDate = fmtDate.parse(buttonAsstDueDate.getText().toString());
+            } catch (ParseException e) {
+                dueDate = null;
+            }
+
+            Intent intent = new Intent();
+            intent.putExtra(EXTRA_ASST_COURSE_ID, thisCourse.getId());
+            intent.putExtra(EXTRA_ASST_TITLE, asstTitle);
+            intent.putExtra(EXTRA_ASST_TYPE, asstType);
+            intent.putExtra(EXTRA_ASST_DUE_DATE, dueDate);
+            intent.putExtra(EXTRA_ASST_ALERT, asstAlert);
+
+            if (thisAsst != null) {
+                intent.putExtra(EXTRA_ASST_ID, thisAsst.getId());
+            }
+
+            getActivity().setResult(RESULT_OK, intent);
+            getActivity().finish();
+        } else {
+            Toast.makeText(getActivity(), "Unable to Save", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

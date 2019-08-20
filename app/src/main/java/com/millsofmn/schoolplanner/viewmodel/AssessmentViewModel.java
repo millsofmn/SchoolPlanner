@@ -22,9 +22,22 @@ public class AssessmentViewModel extends AndroidViewModel {
         assessments = repository.findAll();
     }
 
+    public void insert(Assessment entity){
+        repository.insert(entity);
+    }
+
+    public void update(Assessment entity){
+        repository.update(entity);
+    }
+
+    public void delete(Assessment entity){
+        repository.delete(entity);
+    }
+
     public LiveData<List<Assessment>> getAssessments(){
         return assessments;
     }
+
     public LiveData<List<Assessment>> findByCourseId(int courseId){
         return repository.findByCourseId(courseId);
     }

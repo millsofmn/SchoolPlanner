@@ -81,7 +81,7 @@ public static final String TAG = "++--CourseListFragment";
         recyclerView.setAdapter(courseAdapter);
         recyclerView.setLayoutManager(layoutManager);
 
-        coursesViewModel.getCoursesByTermId(thisTerm.getId()).observe(this, courses -> courseAdapter.setCourses(courses));
+        coursesViewModel.getCoursesByTermId(thisTerm.getId()).observe(this, courses -> courseAdapter.setDate(courses));
     }
 
     private void createNewCourse() {

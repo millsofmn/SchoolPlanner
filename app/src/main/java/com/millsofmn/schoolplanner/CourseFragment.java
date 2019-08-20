@@ -69,6 +69,12 @@ public class CourseFragment extends Fragment implements DatePickerDialog.OnDateS
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_course, container, false);
@@ -106,12 +112,6 @@ public class CourseFragment extends Fragment implements DatePickerDialog.OnDateS
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_content, menu);
         super.onCreateOptionsMenu(menu, inflater);
@@ -121,7 +121,6 @@ public class CourseFragment extends Fragment implements DatePickerDialog.OnDateS
         editTextCourseTitle.setText(thisCourse.getTitle());
         buttonStartDate.setText(fmtDate.format(thisCourse.getStartDate()));
         buttonEndDate.setText(fmtDate.format(thisCourse.getEndDate()));
-        Log.i(TAG, "Status = " + thisCourse.getStatus());
         courseStatus.setSelection(spinnerAdapter.getPosition(thisCourse.getStatus()));
     }
 
@@ -219,11 +218,5 @@ public class CourseFragment extends Fragment implements DatePickerDialog.OnDateS
             }
         }
         Toast.makeText(getActivity(), "Please include a course name, start and end date.", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Toast.makeText(getActivity(), "Please fdsfdsdfsdfs a term fdsdfsdfs, start and end date.", Toast.LENGTH_LONG).show();
     }
 }

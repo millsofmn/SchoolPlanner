@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.millsofmn.schoolplanner.R;
@@ -21,7 +22,7 @@ public class CoursesListAdapter extends RecyclerView.Adapter<CoursesListAdapter.
 
     private static final DateFormat dateFormat = new SimpleDateFormat("MMM yyyy");
 
-    private List<Course> courses = new ArrayList<>();
+    private List<Course> data = new ArrayList<>();
 
     private OnCourseListener onCourseListener;
 
@@ -42,31 +43,39 @@ public class CoursesListAdapter extends RecyclerView.Adapter<CoursesListAdapter.
         CardView cardView = holder.cardView;
 
         TextView courseTitle = cardView.findViewById(R.id.course_title);
-        courseTitle.setText(courses.get(position).getTitle());
+        courseTitle.setText(data.get(position).getTitle());
 
         TextView courseDates = cardView.findViewById(R.id.course_dates);
-        if(courses.get(position).getStartDate() != null){
-            courseDates.setText(dateFormat.format(courses.get(position).getStartDate()) + " to " + dateFormat.format(courses.get(position).getEndDate()));
+        if(data.get(position).getStartDate() != null){
+            courseDates.setText(dateFormat.format(data.get(position).getStartDate()) + " to " + dateFormat.format(data.get(position).getEndDate()));
         }
 
         TextView courseStatus = cardView.findViewById(R.id.course_status);
-        courseStatus.setText(courses.get(position).getStatus());
+        courseStatus.setText(data.get(position).getStatus());
     }
 
     @Override
     public int getItemCount() {
-        return courses.size();
+        return data.size();
     }
 
-    public void setCourses(List<Course> courses){
-        this.courses = courses;
-        notifyDataSetChanged();
+    public void setDate(List<Course> newData){
+        if(data != null) {
+            DataDiffCallBack dataDiffCallBack = new DataDiffCallBack(data, newData);
+            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(dataDiffCallBack);
+
+            data.clear();
+            data.addAll(newData);
+            diffResult.dispatchUpdatesTo(this);
+        } else {
+            data = newData;
+        }
     }
 
     public Course getSelectedCourse(int position){
-        if(!courses.isEmpty()){
-            if(courses.size() > 0){
-                return courses.get(position);
+        if(!data.isEmpty()){
+            if(data.size() > 0){
+                return data.get(position);
             }
         }
         return null;
@@ -92,5 +101,34 @@ public class CoursesListAdapter extends RecyclerView.Adapter<CoursesListAdapter.
 
     public interface OnCourseListener {
         void onCourseClick(int position);
+    }
+
+    class DataDiffCallBack extends DiffUtil.Callback {
+        private final List<Course> oldData, newData;
+
+        public DataDiffCallBack(List<Course> oldData, List<Course> newData) {
+            this.oldData = oldData;
+            this.newData = newData;
+        }
+
+        @Override
+        public int getOldListSize() {
+            return oldData.size();
+        }
+
+        @Override
+        public int getNewListSize() {
+            return newData.size();
+        }
+
+        @Override
+        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+            return oldData.get(oldItemPosition).getId() == newData.get(newItemPosition).getId();
+        }
+
+        @Override
+        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+            return oldData.get(oldItemPosition).equals(newData.get(newItemPosition));
+        }
     }
 }

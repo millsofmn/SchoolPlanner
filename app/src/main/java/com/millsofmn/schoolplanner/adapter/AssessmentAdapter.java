@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.millsofmn.schoolplanner.R;
@@ -22,14 +23,23 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
     private static final DateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy");
     private OnClickListener onClickListener;
 
-    private List<Assessment> assessmentList;
+    private List<Assessment> data;
 
     public AssessmentAdapter(OnClickListener onClickListener) {
         this.onClickListener = onClickListener;
     }
 
-    public void setAssessmentList(List<Assessment> assessmentList){
-        this.assessmentList = assessmentList;
+    public void setData(List<Assessment> newData){
+        if (data != null) {
+            DataDiffCallBack dataDiffCallBack = new DataDiffCallBack(data, newData);
+            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(dataDiffCallBack);
+
+            data.clear();
+            data.addAll(newData);
+            diffResult.dispatchUpdatesTo(this);
+        } else {
+            data = newData;
+        }
     }
 
     @NonNull
@@ -46,19 +56,19 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
         CardView cardView = holder.cardView;
 
         TextView tvTitle = cardView.findViewById(R.id.tv_ass_title);
-        tvTitle.setText(assessmentList.get(position).getTitle());
+        tvTitle.setText(data.get(position).getTitle());
 
         TextView tvPerformanceType = cardView.findViewById(R.id.tv_ass_performance_type);
-        tvPerformanceType.setText(assessmentList.get(position).getPerformanceType());
+        tvPerformanceType.setText(data.get(position).getPerformanceType());
 
 
         TextView courseDates = cardView.findViewById(R.id.tv_ass_due_date);
         TextView alert = cardView.findViewById(R.id.tv_ass_alert);
 
-        if(assessmentList.get(position).getDueDate() != null){
-            courseDates.setText(dateFormat.format(assessmentList.get(position).getDueDate()));
+        if(data.get(position).getDueDate() != null){
+            courseDates.setText(dateFormat.format(data.get(position).getDueDate()));
 
-            if(assessmentList.get(position).isAlertOnDueDate()){
+            if(data.get(position).isAlertOnDueDate()){
                 alert.setText("Alert On");
             } else {
                 alert.setText("Alert Off");
@@ -72,16 +82,16 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
 
     @Override
     public int getItemCount() {
-        return assessmentList == null ? 0 : assessmentList.size();
+        return data == null ? 0 : data.size();
     }
 
     public Assessment getItem(int position){
-        return assessmentList.get(position);
+        return data.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return assessmentList.get(position).getId();
+        return data.get(position).getId();
     }
 
     static class AssessmentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -104,5 +114,34 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
 
     public interface OnClickListener {
         void onClick(int position);
+    }
+
+    class DataDiffCallBack extends DiffUtil.Callback {
+        private final List<Assessment> oldData, newData;
+
+        public DataDiffCallBack(List<Assessment> oldData, List<Assessment> newData) {
+            this.oldData = oldData;
+            this.newData = newData;
+        }
+
+        @Override
+        public int getOldListSize() {
+            return oldData.size();
+        }
+
+        @Override
+        public int getNewListSize() {
+            return newData.size();
+        }
+
+        @Override
+        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+            return oldData.get(oldItemPosition).getId() == newData.get(newItemPosition).getId();
+        }
+
+        @Override
+        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+            return oldData.get(oldItemPosition).equals(newData.get(newItemPosition));
+        }
     }
 }
