@@ -1,12 +1,11 @@
 package com.millsofmn.schoolplanner;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
-
-import android.os.Bundle;
-import android.view.Menu;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -49,9 +48,4 @@ public class TermActivity extends AppCompatActivity  {
         viewPager.setCurrentItem(fragmentNumber);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_content, menu);
-        return true;
-    }
 }

@@ -4,13 +4,6 @@ package com.millsofmn.schoolplanner;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -18,6 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.millsofmn.schoolplanner.adapter.CoursesListAdapter;
@@ -85,7 +84,7 @@ public static final String TAG = "++--CourseListFragment";
         coursesViewModel.getCoursesByTermId(thisTerm.getId()).observe(this, courses -> courseAdapter.setCourses(courses));
     }
 
-    private void createNewCourse(){
+    private void createNewCourse() {
         Intent intent = new Intent(getActivity(), CourseActivity.class);
         intent.putExtra(TermFragment.EXTRA_TERM, thisTerm);
         startActivityForResult(intent, ADD_COURSE_REQUEST);

@@ -17,10 +17,12 @@ import androidx.room.Index;
         foreignKeys = {
                 @ForeignKey(entity = Course.class,
                         parentColumns = "id",
-                        childColumns = "course_id"),
+                        childColumns = "course_id",
+                        onDelete = ForeignKey.CASCADE),
                 @ForeignKey(entity = Mentor.class,
                         parentColumns = "id",
-                        childColumns = "mentor_id")})
+                        childColumns = "mentor_id",
+                        onDelete = ForeignKey.CASCADE)})
 public class CourseMentor implements Parcelable {
 
     @ColumnInfo(name = "course_id")

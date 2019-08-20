@@ -82,14 +82,14 @@ public class DatabaseSeed {
         assessments.add(new Assessment(5, 5, "Assessment", "OBJECTIVE", getDate(-1), false));
         assessments.add(new Assessment(6, 6, "Assessment", "PERFORMANCE", getDate(0), false));
         assessments.add(new Assessment(7, 7, "Assessment", "OBJECTIVE", getDate(1), false));
-        assessments.add(new Assessment(8, 7, "Assessment", "PERFORMANCE", getDate(1), false));
-        assessments.add(new Assessment(9, 8, "Assessment", "OBJECTIVE", getDate(2), false));
-        assessments.add(new Assessment(10, 9, "Assessment", "PERFORMANCE", getDate(3), false));
-        assessments.add(new Assessment(11, 10, "Assessment", "OBJECTIVE", getDate(4), false));
-        assessments.add(new Assessment(12, 11, "Assessment", "OBJECTIVE", getDate(5), false));
+        assessments.add(new Assessment(8, 7, "Assessment", "PERFORMANCE", null, false));
+        assessments.add(new Assessment(9, 8, "Assessment", "OBJECTIVE", null, false));
+        assessments.add(new Assessment(10, 9, "Assessment", "PERFORMANCE", getDate(3), true));
+        assessments.add(new Assessment(11, 10, "Assessment", "OBJECTIVE", getDate(4), true));
+        assessments.add(new Assessment(12, 11, "Assessment", "OBJECTIVE", null, false));
         assessments.add(new Assessment(13, 12, "Assessment", "OBJECTIVE", getDate(6), false));
-        assessments.add(new Assessment(14, 12, "Assessment", "PERFORMANCE", getDate(6), false));
-        assessments.add(new Assessment(15, 12, "Assessment", "PERFORMANCE", getDate(6), false));
+        assessments.add(new Assessment(14, 12, "Assessment", "PERFORMANCE", null, false));
+        assessments.add(new Assessment(15, 12, "Assessment", "PERFORMANCE", getDate(6), true));
 
         return assessments;
     }
