@@ -20,4 +20,5 @@
         <item>OBJECTIVE</item>
         <item>PERFORMANCE</item>
     </string-array>
+    <string name="title_activity_mentor">MentorActivity</string>
 </resources>
