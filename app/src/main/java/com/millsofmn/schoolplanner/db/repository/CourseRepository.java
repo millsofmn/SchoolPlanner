@@ -36,6 +36,10 @@ public class CourseRepository {
         new updateAsyncTask(dao).execute(entity);
     }
 
+    public int getCountByTermId(int termId){
+        return dao.getCountByTermId(termId);
+    }
+
     public LiveData<List<Course>> findAll() {
         return all;
     }

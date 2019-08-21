@@ -1,6 +1,7 @@
 package com.millsofmn.schoolplanner;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +33,18 @@ public class AsstActivity extends AppCompatActivity {
         TabLayout tabLayout = findViewById(R.id.tab_asst_layout);
         tabLayout.setupWithViewPager(viewPager);
 
+    }
+
+    // Up causes issue when clicked here
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return(super.onOptionsItemSelected(item));
     }
 
     private void setupViewPager(ViewPager viewPager) {

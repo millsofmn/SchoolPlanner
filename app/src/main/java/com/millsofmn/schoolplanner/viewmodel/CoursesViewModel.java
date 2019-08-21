@@ -38,6 +38,12 @@ public class CoursesViewModel extends AndroidViewModel {
     public LiveData<List<Course>> getAll(){
         return courses;
     }
+
+    public int getCountByTermId(int termId){
+
+        return repository.getCountByTermId(termId);
+    }
+
     public LiveData<List<Course>> getCoursesByTermId(int termId){
         return repository.findByTermId(termId);
     }

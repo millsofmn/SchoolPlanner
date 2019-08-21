@@ -40,6 +40,7 @@ import static android.app.Activity.RESULT_OK;
  * A simple {@link Fragment} subclass.
  */
 public class TermFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
+    public static final String TAG = "TermFragment";
 
     public static final String EXTRA_TERM = "term";
     public static final String EXTRA_TERM_ID = "term_id";

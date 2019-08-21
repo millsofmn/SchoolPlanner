@@ -57,6 +57,7 @@ public class AsstFragment extends Fragment implements DatePickerDialog.OnDateSet
     private EditText editTextAsstTitle;
     private Spinner spinAsstType;
     private Button buttonAsstDueDate;
+    private Button buttonClearDate;
     private CheckBox checkBoxAsstAlert;
     private ArrayAdapter<CharSequence> spinnerAdapter;
 
@@ -90,6 +91,14 @@ public class AsstFragment extends Fragment implements DatePickerDialog.OnDateSet
         buttonAsstDueDate = view.findViewById(R.id.btn_asst_due_date);
         buttonAsstDueDate.setOnClickListener(cal -> {
             showDatePickerDialog();
+        });
+
+        buttonClearDate = view.findViewById(R.id.btn_asst_clear_date);
+        buttonClearDate.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                buttonAsstDueDate.setText("NOT SCHEDULEd");
+            }
         });
 
         spinAsstType = view.findViewById(R.id.sp_asst_type);
