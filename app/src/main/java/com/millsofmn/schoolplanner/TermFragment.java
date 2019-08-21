@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,17 +22,22 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.millsofmn.schoolplanner.db.entity.Course;
 import com.millsofmn.schoolplanner.db.entity.Term;
+import com.millsofmn.schoolplanner.viewmodel.CoursesViewModel;
 import com.millsofmn.schoolplanner.viewmodel.TermsViewModel;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -62,6 +68,7 @@ public class TermFragment extends Fragment implements DatePickerDialog.OnDateSet
         // Required empty public constructor
     }
 
+    List<Course> courses = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -114,6 +121,16 @@ public class TermFragment extends Fragment implements DatePickerDialog.OnDateSet
         editTermTitle.setText(termInitial.getTitle());
         editStartDate.setText(fmtDate.format(termInitial.getStartDate()));
         editEndDate.setText(fmtDate.format(termInitial.getEndDate()));
+
+        CoursesViewModel coursesViewModel = ViewModelProviders.of(this).get(CoursesViewModel.class);
+
+        coursesViewModel.getCoursesByTermId(termInitial.getId()).observe(this, new Observer<List<Course>>() {
+            @Override
+            public void onChanged(List<Course> courses) {
+                setCourses(courses);
+            }
+        });
+        Log.i(TAG, "I have " + myCourses.size());
     }
 
     private boolean getIncomingIntent() {
@@ -158,12 +175,23 @@ public class TermFragment extends Fragment implements DatePickerDialog.OnDateSet
                 return super.onOptionsItemSelected(item);
         }
     }
+            List<Course> myCourses = new ArrayList<>();
+    public void setCourses(List<Course> courseList){
+        myCourses = courseList;
+    }
 
     private void deleteTerm() {
         if (termInitial != null) {
-            TermsViewModel termViewModel = ViewModelProviders.of(this).get(TermsViewModel.class);
-            termViewModel.delete(termInitial);
-            startActivity(new Intent(getActivity(), TermsListActivity.class));
+
+
+            if(myCourses.isEmpty()) {
+
+                TermsViewModel termViewModel = ViewModelProviders.of(this).get(TermsViewModel.class);
+                termViewModel.delete(termInitial);
+                startActivity(new Intent(getActivity(), TermsListActivity.class));
+            } else {
+                Toast.makeText(getActivity(), "Cannot delete terms with courses.", Toast.LENGTH_LONG).show();
+            }
         }
     }
 

@@ -114,6 +114,7 @@ public abstract class SchoolPlannerDatabase extends RoomDatabase {
             Log.i(TAG, "initialize database with data");
             courseMentorDao.deleteAll();
             mentorDao.deleteAll();
+            courseDao.deleteAll();
             termDao.deleteAll();
 
             for (Term term : DatabaseSeed.getTerms()) {

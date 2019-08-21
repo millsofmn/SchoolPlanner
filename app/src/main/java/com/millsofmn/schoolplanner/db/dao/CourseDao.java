@@ -35,4 +35,7 @@ public interface CourseDao {
 
     @Query("SELECT count(id) FROM course WHERE term_id = :termId")
     Integer getCountByTermId(int termId);
+
+    @Query("DELETE FROM course")
+    void deleteAll();
 }
