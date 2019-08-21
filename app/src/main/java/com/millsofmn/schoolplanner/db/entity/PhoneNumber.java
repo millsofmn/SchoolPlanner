@@ -26,7 +26,7 @@ public class PhoneNumber implements Parcelable {
     private int mentorId;
 
     @NonNull
-    @ColumnInfo(name = "email_address")
+    @ColumnInfo(name = "phone_number")
     private String phoneNumber;
 
     public PhoneNumber() {

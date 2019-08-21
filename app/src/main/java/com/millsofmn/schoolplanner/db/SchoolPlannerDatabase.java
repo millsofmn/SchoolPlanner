@@ -17,6 +17,7 @@ import com.millsofmn.schoolplanner.db.dao.CourseDao;
 import com.millsofmn.schoolplanner.db.dao.CourseMentorDao;
 import com.millsofmn.schoolplanner.db.dao.EmailDao;
 import com.millsofmn.schoolplanner.db.dao.MentorDao;
+import com.millsofmn.schoolplanner.db.dao.MentorWithDao;
 import com.millsofmn.schoolplanner.db.dao.NoteDao;
 import com.millsofmn.schoolplanner.db.dao.PhoneNumberDao;
 import com.millsofmn.schoolplanner.db.dao.TermDao;
@@ -61,6 +62,8 @@ public abstract class SchoolPlannerDatabase extends RoomDatabase {
 
     public abstract TermDao termDao();
 
+    public abstract MentorWithDao mentorWithDao();
+
     private static volatile SchoolPlannerDatabase INSTANCE;
 
     public static SchoolPlannerDatabase getInstance(final Context context) {
@@ -87,6 +90,7 @@ public abstract class SchoolPlannerDatabase extends RoomDatabase {
             new PopulateDbAsync(INSTANCE).execute();
         }
     };
+
 
     private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
         private final AssessmentDao assessmentDao;

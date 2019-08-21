@@ -49,7 +49,7 @@ public class MentorListFragment extends Fragment implements MentorListAdapter.On
 
         mentorViewModel = ViewModelProviders.of(this).get(MentorViewModel.class);
 
-        mentorViewModel.getMentors().observe(this, mentors -> mentorListAdapter.setData(mentors));
+        mentorViewModel.getMentorWithEmbedded().observe(this, mentors -> mentorListAdapter.setData(mentors));
     }
 
     @Override

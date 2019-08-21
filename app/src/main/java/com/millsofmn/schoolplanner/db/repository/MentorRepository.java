@@ -7,7 +7,9 @@ import androidx.lifecycle.LiveData;
 
 import com.millsofmn.schoolplanner.db.SchoolPlannerDatabase;
 import com.millsofmn.schoolplanner.db.dao.MentorDao;
+import com.millsofmn.schoolplanner.db.dao.MentorWithDao;
 import com.millsofmn.schoolplanner.db.entity.Mentor;
+import com.millsofmn.schoolplanner.db.entity.MentorWithEmbedded;
 
 import java.util.List;
 
@@ -17,10 +19,12 @@ public class MentorRepository {
     private LiveData<List<Mentor>> all;
 
     private MentorDao dao;
+    private MentorWithDao mentorWithDao;
 
     public MentorRepository(Context context){
         SchoolPlannerDatabase db = SchoolPlannerDatabase.getInstance(context);
         dao = db.mentorDao();
+        mentorWithDao = db.mentorWithDao();
         all = dao.getAll();
     }
 
@@ -42,6 +46,10 @@ public class MentorRepository {
 
     public LiveData<List<Mentor>> findAll() {
         return all;
+    }
+
+    public LiveData<List<MentorWithEmbedded>> findMentorWith() {
+        return mentorWithDao.loadMentorWithEmbedded();
     }
 
     private static class insertAsyncTask extends AsyncTask<Mentor, Void, Void> {

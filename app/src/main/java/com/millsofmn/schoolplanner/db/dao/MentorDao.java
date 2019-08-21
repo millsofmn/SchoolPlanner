@@ -8,7 +8,6 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-
 import com.millsofmn.schoolplanner.db.entity.Mentor;
 
 import java.util.List;
@@ -33,4 +32,5 @@ public interface MentorDao {
 
     @Query("DELETE FROM mentor")
     void deleteAll();
+
 }
