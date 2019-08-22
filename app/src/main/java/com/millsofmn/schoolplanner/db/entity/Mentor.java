@@ -18,21 +18,33 @@ public class Mentor implements Parcelable {
     @ColumnInfo(name = "name")
     private String name;
 
+    @ColumnInfo(name = "email_address")
+    private String emailAddress;
+
+    @ColumnInfo(name = "phone_number")
+    private String phoneNumber;
+
     public Mentor() {
     }
 
-    public Mentor(@NonNull String name) {
+    public Mentor(@NonNull String name, String emailAddress, String phoneNumber) {
         this.name = name;
+        this.emailAddress = emailAddress;
+        this.phoneNumber = phoneNumber;
     }
 
-    public Mentor(int id, @NonNull String name) {
+    public Mentor(int id, @NonNull String name, String emailAddress, String phoneNumber) {
         this.id = id;
         this.name = name;
+        this.emailAddress = emailAddress;
+        this.phoneNumber = phoneNumber;
     }
 
     protected Mentor(Parcel in) {
         id = in.readInt();
         name = in.readString();
+        emailAddress = in.readString();
+        phoneNumber = in.readString();
     }
 
     public static final Creator<Mentor> CREATOR = new Creator<Mentor>() {
@@ -64,12 +76,40 @@ public class Mentor implements Parcelable {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "Mentor{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public Mentor id(int id) {
+        this.id = id;
+        return this;
+    }
+
+    public Mentor name(@NonNull String name) {
+        this.name = name;
+        return this;
+    }
+
+    public Mentor emailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+        return this;
+    }
+
+    public Mentor phoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+        return this;
     }
 
     @Override
@@ -81,5 +121,7 @@ public class Mentor implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(id);
         parcel.writeString(name);
+        parcel.writeString(emailAddress);
+        parcel.writeString(phoneNumber);
     }
 }

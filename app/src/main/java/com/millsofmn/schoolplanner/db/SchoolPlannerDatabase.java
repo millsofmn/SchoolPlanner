@@ -15,19 +15,14 @@ import com.millsofmn.schoolplanner.db.converter.Converters;
 import com.millsofmn.schoolplanner.db.dao.AssessmentDao;
 import com.millsofmn.schoolplanner.db.dao.CourseDao;
 import com.millsofmn.schoolplanner.db.dao.CourseMentorDao;
-import com.millsofmn.schoolplanner.db.dao.EmailDao;
 import com.millsofmn.schoolplanner.db.dao.MentorDao;
-import com.millsofmn.schoolplanner.db.dao.MentorWithDao;
 import com.millsofmn.schoolplanner.db.dao.NoteDao;
-import com.millsofmn.schoolplanner.db.dao.PhoneNumberDao;
 import com.millsofmn.schoolplanner.db.dao.TermDao;
 import com.millsofmn.schoolplanner.db.entity.Assessment;
 import com.millsofmn.schoolplanner.db.entity.Course;
 import com.millsofmn.schoolplanner.db.entity.CourseMentor;
-import com.millsofmn.schoolplanner.db.entity.Email;
 import com.millsofmn.schoolplanner.db.entity.Mentor;
 import com.millsofmn.schoolplanner.db.entity.Note;
-import com.millsofmn.schoolplanner.db.entity.PhoneNumber;
 import com.millsofmn.schoolplanner.db.entity.Term;
 
 @Database(
@@ -35,10 +30,8 @@ import com.millsofmn.schoolplanner.db.entity.Term;
                 Assessment.class,
                 Course.class,
                 CourseMentor.class,
-                Email.class,
                 Mentor.class,
                 Note.class,
-                PhoneNumber.class,
                 Term.class},
         version = 1,
         exportSchema = false)
@@ -52,17 +45,11 @@ public abstract class SchoolPlannerDatabase extends RoomDatabase {
 
     public abstract CourseMentorDao courseMentorDao();
 
-    public abstract EmailDao emailDao();
-
     public abstract MentorDao mentorDao();
 
     public abstract NoteDao noteDao();
 
-    public abstract PhoneNumberDao phoneNumberDao();
-
     public abstract TermDao termDao();
-
-    public abstract MentorWithDao mentorWithDao();
 
     private static volatile SchoolPlannerDatabase INSTANCE;
 
@@ -96,20 +83,16 @@ public abstract class SchoolPlannerDatabase extends RoomDatabase {
         private final AssessmentDao assessmentDao;
         private final CourseDao courseDao;
         private final CourseMentorDao courseMentorDao;
-        private final EmailDao emailDao;
         private final MentorDao mentorDao;
         private final NoteDao noteDao;
-        private final PhoneNumberDao phoneNumberDao;
         private final TermDao termDao;
 
         public PopulateDbAsync(SchoolPlannerDatabase database) {
             assessmentDao = database.assessmentDao();
             courseDao = database.courseDao();
             courseMentorDao = database.courseMentorDao();
-            emailDao = database.emailDao();
             mentorDao = database.mentorDao();
             noteDao = database.noteDao();
-            phoneNumberDao = database.phoneNumberDao();
             termDao = database.termDao();
         }
 
@@ -141,13 +124,6 @@ public abstract class SchoolPlannerDatabase extends RoomDatabase {
                 mentorDao.insert(mentor);
             }
 
-            for (Email email : DatabaseSeed.getEmail()) {
-                emailDao.insert(email);
-            }
-
-            for (PhoneNumber phoneNumber : DatabaseSeed.getPhoneNumbers()) {
-                phoneNumberDao.insert(phoneNumber);
-            }
 
             for (CourseMentor courseMentor : DatabaseSeed.getCourseMentors()) {
                 courseMentorDao.insert(courseMentor);

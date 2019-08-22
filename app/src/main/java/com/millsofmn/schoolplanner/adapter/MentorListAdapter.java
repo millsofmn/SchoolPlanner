@@ -1,6 +1,5 @@
 package com.millsofmn.schoolplanner.adapter;
 
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.millsofmn.schoolplanner.R;
-import com.millsofmn.schoolplanner.db.entity.MentorWithEmbedded;
+import com.millsofmn.schoolplanner.db.entity.Mentor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +20,7 @@ import java.util.List;
 public class MentorListAdapter extends RecyclerView.Adapter<MentorListAdapter.ViewHolder> {
     public static final String TAG = "++++++++MentorListAdapter";
 
-    private List<MentorWithEmbedded> data = new ArrayList<>();
+    private List<Mentor> data = new ArrayList<>();
 
     private OnMentorListener onMentorListener;
 
@@ -43,13 +42,13 @@ public class MentorListAdapter extends RecyclerView.Adapter<MentorListAdapter.Vi
 
         Log.e(TAG, data.get(position).toString());
         TextView mentorName = cardView.findViewById(R.id.tv_mentor_name);
-        mentorName.setText(data.get(position).mentor.getName());
+        mentorName.setText(data.get(position).getName());
 
         TextView phoneNumbers = cardView.findViewById(R.id.tv_mentor_phone);
-        phoneNumbers.setText(TextUtils.join("\n", data.get(position).phoneNumbers));
+        phoneNumbers.setText(data.get(position).getPhoneNumber());
 
         TextView emailAddresses = cardView.findViewById(R.id.tv_mentor_emails);
-        emailAddresses.setText(TextUtils.join("\n", data.get(position).emails));
+        emailAddresses.setText(data.get(position).getEmailAddress());
 
     }
 
@@ -58,7 +57,7 @@ public class MentorListAdapter extends RecyclerView.Adapter<MentorListAdapter.Vi
         return data.size();
     }
 
-    public void setData(List<MentorWithEmbedded> newData){
+    public void setData(List<Mentor> newData){
         if(data != null) {
             DataDiffCallBack dataDiffCallBack = new DataDiffCallBack(data, newData);
             DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(dataDiffCallBack);
@@ -71,7 +70,7 @@ public class MentorListAdapter extends RecyclerView.Adapter<MentorListAdapter.Vi
         }
     }
 
-    public MentorWithEmbedded getSelectedMentor(int position){
+    public Mentor getSelectedMentor(int position){
         if(!data.isEmpty()){
             if(data.size() > 0){
                 return data.get(position);
@@ -99,7 +98,7 @@ public class MentorListAdapter extends RecyclerView.Adapter<MentorListAdapter.Vi
     }
 
     public int getId(int position){
-        return data.get(position).mentor.getId();
+        return data.get(position).getId();
     }
 
     public interface OnMentorListener {
@@ -107,9 +106,9 @@ public class MentorListAdapter extends RecyclerView.Adapter<MentorListAdapter.Vi
     }
 
     class DataDiffCallBack extends DiffUtil.Callback {
-        private final List<MentorWithEmbedded> oldData, newData;
+        private final List<Mentor> oldData, newData;
 
-        public DataDiffCallBack(List<MentorWithEmbedded> oldData, List<MentorWithEmbedded> newData) {
+        public DataDiffCallBack(List<Mentor> oldData, List<Mentor> newData) {
             this.oldData = oldData;
             this.newData = newData;
         }
@@ -126,7 +125,7 @@ public class MentorListAdapter extends RecyclerView.Adapter<MentorListAdapter.Vi
 
         @Override
         public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-            return oldData.get(oldItemPosition).mentor.getId() == newData.get(newItemPosition).mentor.getId();
+            return oldData.get(oldItemPosition).getId() == newData.get(newItemPosition).getId();
         }
 
         @Override

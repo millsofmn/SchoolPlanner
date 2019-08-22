@@ -44,25 +44,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_mentor_name" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="328dp"
-            android:layout_height="78dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/emailLabel"
-            app:layout_constraintTop_toBottomOf="@+id/et_mentor_name" />
-
-        <TextView
-            android:id="@+id/tv_mentor_emails"
+        <EditText
+            android:id="@+id/et_mentor_emails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
             android:text="TextView"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+            app:layout_constraintTop_toBottomOf="@+id/emailLabel" />
 
         <TextView
             android:id="@+id/textView9"
@@ -70,13 +60,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:text="Phone Numbers:"
+            android:text="Phone Number:"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_mentor_emails" />
+            app:layout_constraintTop_toBottomOf="@+id/et_mentor_emails" />
 
-
-        <TextView
-            android:id="@+id/tv_mentor_phone"
+        <EditText
+            android:id="@+id/et_mentor_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -84,6 +73,24 @@
             android:text="TextView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+        <Button
+            android:id="@+id/btn_mentor_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_mentor_phone" />
+
+        <Button
+            android:id="@+id/btn_mentor_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_mentor_delete"
+            app:layout_constraintTop_toBottomOf="@+id/et_mentor_phone" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

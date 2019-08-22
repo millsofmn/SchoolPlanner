@@ -3,10 +3,8 @@ package com.millsofmn.schoolplanner.db;
 import com.millsofmn.schoolplanner.db.entity.Assessment;
 import com.millsofmn.schoolplanner.db.entity.Course;
 import com.millsofmn.schoolplanner.db.entity.CourseMentor;
-import com.millsofmn.schoolplanner.db.entity.Email;
 import com.millsofmn.schoolplanner.db.entity.Mentor;
 import com.millsofmn.schoolplanner.db.entity.Note;
-import com.millsofmn.schoolplanner.db.entity.PhoneNumber;
 import com.millsofmn.schoolplanner.db.entity.Term;
 
 import java.util.ArrayList;
@@ -96,11 +94,11 @@ public class DatabaseSeed {
 
     public static List<Mentor> getMentors(){
         List<Mentor> mentors = new ArrayList<>();
-        mentors.add(new Mentor(1, "Sally June"));
-        mentors.add(new Mentor(2, "Sven Updohal"));
-        mentors.add(new Mentor(3, "James Smith"));
-        mentors.add(new Mentor(4, "Saul Paul"));
-        mentors.add(new Mentor(5, "Negan Gull"));
+        mentors.add(new Mentor(1, "Sally June","june.sally@exmple.com","507-555-1234"));
+        mentors.add(new Mentor(2, "Sven Updohal","updahal.sven@exmple.com","507-555-4567"));
+        mentors.add(new Mentor(3, "James Smith","smith.jamesy@exmple.com","507-555-7899"));
+        mentors.add(new Mentor(4, "Saul Paul","paul.saul@exmple.com","507-555-7534"));
+        mentors.add(new Mentor(5, "Negan Gull","bible@exmple.com","507-555-1599"));
 
         return mentors;
     }
@@ -121,31 +119,5 @@ public class DatabaseSeed {
         courseMentors.add(new CourseMentor(12, 5));
 
         return courseMentors;
-    }
-
-    public static List<Email> getEmail(){
-        List<Email> emails = new ArrayList<>();
-        emails.add(new Email(1, 1,"june.sally@exmple.com"));
-        emails.add(new Email(2, 2,"updahal.sven@exmple.com"));
-        emails.add(new Email(3, 3,"smith.jamesy@exmple.com"));
-        emails.add(new Email(4, 4,"paul.saul@exmple.com"));
-        emails.add(new Email(5, 4,"bible@exmple.com"));
-        emails.add(new Email(6, 5,"gull.negany@exmple.com"));
-
-        return emails;
-    }
-
-    public static List<PhoneNumber> getPhoneNumbers(){
-        List<PhoneNumber> phoneNumbers = new ArrayList<>();
-        phoneNumbers.add(new PhoneNumber(1, 1, "507-555-1234"));
-        phoneNumbers.add(new PhoneNumber(2, 1, "507-555-4567"));
-        phoneNumbers.add(new PhoneNumber(3, 2, "507-555-7899"));
-        phoneNumbers.add(new PhoneNumber(4, 3, "507-555-7534"));
-        phoneNumbers.add(new PhoneNumber(5, 4, "507-555-1599"));
-        phoneNumbers.add(new PhoneNumber(6, 5, "507-555-8525"));
-        phoneNumbers.add(new PhoneNumber(7, 5, "507-555-9173"));
-        phoneNumbers.add(new PhoneNumber(8, 5, "507-555-4002"));
-
-        return phoneNumbers;
     }
 }

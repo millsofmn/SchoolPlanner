@@ -7,7 +7,6 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.millsofmn.schoolplanner.db.entity.Mentor;
-import com.millsofmn.schoolplanner.db.entity.MentorWithEmbedded;
 import com.millsofmn.schoolplanner.db.repository.MentorRepository;
 
 import java.util.List;
@@ -39,10 +38,6 @@ public class MentorViewModel extends AndroidViewModel {
 
     public LiveData<List<Mentor>> getMentors(){
         return mentors;
-    }
-
-    public LiveData<List<MentorWithEmbedded>> getMentorWithEmbedded() {
-        return mentorRepository.findMentorWith();
     }
 
     public LiveData<Mentor> findById(int id){

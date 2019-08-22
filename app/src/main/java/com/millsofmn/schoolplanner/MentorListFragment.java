@@ -50,13 +50,13 @@ public class MentorListFragment extends Fragment implements MentorListAdapter.On
 
         mentorViewModel = ViewModelProviders.of(this).get(MentorViewModel.class);
 
-        mentorViewModel.getMentorWithEmbedded().observe(this, mentors -> mentorListAdapter.setData(mentors));
+        mentorViewModel.getMentors().observe(this, mentors -> mentorListAdapter.setData(mentors));
     }
 
     @Override
     public void onMentorClick(int position) {
         Intent intent = new Intent(getActivity(), MentorActivity.class);
-        intent.putExtra(MentorActivity.MENTOR_SELECTED_ID_EXTRA, mentorListAdapter.getSelectedMentor(position).mentor.getId());
+        intent.putExtra(MentorActivity.MENTOR_SELECTED_ID_EXTRA, mentorListAdapter.getSelectedMentor(position).getId());
 
 //        mentorViewModel.findById(mentorListAdapter.getId(position)).observe(this, new Observer<Mentor>() {
 //            @Override

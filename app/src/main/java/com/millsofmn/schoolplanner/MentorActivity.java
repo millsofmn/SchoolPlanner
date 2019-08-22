@@ -1,8 +1,8 @@
 package com.millsofmn.schoolplanner;
 
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -21,8 +21,12 @@ public class MentorActivity extends AppCompatActivity {
 
     private Observer<Mentor> mentorObserver;
 
-    private TextView mentorName;
+    private int id;
     private EditText etMentorName;
+    private EditText etEmailAddress;
+    private EditText etPhoneNumber;
+    private Button btnSave;
+    private Button btnDelete;
 
 
 
@@ -36,13 +40,23 @@ public class MentorActivity extends AppCompatActivity {
 
         mentorViewModel = ViewModelProviders.of(this).get(MentorViewModel.class);
 
-        mentorName = findViewById(R.id.tv_mentor_name);
         etMentorName = findViewById(R.id.et_mentor_name);
+        etEmailAddress = findViewById(R.id.et_mentor_emails);
+        etPhoneNumber = findViewById(R.id.et_mentor_phone);
+
+        btnDelete = findViewById(R.id.btn_mentor_delete);
+
+        btnSave = findViewById(R.id.btn_mentor_save);
 
         mentorObserver = mentor -> {
             if(mentor.getName() != null && !mentor.getName().isEmpty()){
-                mentorName.setText(mentor.getName());
                 etMentorName.setText(mentor.getName());
+            }
+            if(mentor.getEmailAddress() != null && !mentor.getEmailAddress().isEmpty()){
+                etEmailAddress.setText(mentor.getEmailAddress());
+            }
+            if(mentor.getPhoneNumber() != null && !mentor.getPhoneNumber().isEmpty()){
+                etPhoneNumber.setText(mentor.getPhoneNumber());
             }
         };
 
@@ -52,9 +66,17 @@ public class MentorActivity extends AppCompatActivity {
     private void getIncomingIntent() {
 
         if(getIntent().hasExtra(MENTOR_SELECTED_ID_EXTRA)){
-            int id = getIntent().getIntExtra(MENTOR_SELECTED_ID_EXTRA, -1);
+            id = getIntent().getIntExtra(MENTOR_SELECTED_ID_EXTRA, -1);
             mentorViewModel.findById(id).observe(this, mentorObserver);
 
         }
+    }
+
+    private void save(){
+
+    }
+
+    private void delete(){
+
     }
 }
