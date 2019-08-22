@@ -21,6 +21,8 @@ import com.millsofmn.schoolplanner.viewmodel.MentorViewModel;
  * A simple {@link Fragment} subclass.
  */
 public class MentorListFragment extends Fragment implements MentorListAdapter.OnMentorListener {
+    public static final int ADD_MENTOR_REQUEST = 1;
+    public static final int EDIT_MENTOR_REQUEST = 2;
 
     private MentorViewModel mentorViewModel;
     private MentorListAdapter mentorListAdapter;
@@ -44,6 +46,7 @@ public class MentorListFragment extends Fragment implements MentorListAdapter.On
         return view;
     }
 
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -58,14 +61,9 @@ public class MentorListFragment extends Fragment implements MentorListAdapter.On
         Intent intent = new Intent(getActivity(), MentorActivity.class);
         intent.putExtra(MentorActivity.MENTOR_SELECTED_ID_EXTRA, mentorListAdapter.getSelectedMentor(position).getId());
 
-//        mentorViewModel.findById(mentorListAdapter.getId(position)).observe(this, new Observer<Mentor>() {
-//            @Override
-//            public void onChanged(Mentor mentor) {
-//                intent.putExtra(MentorActivity.MENTOR_SELECTED_EXTRA, mentor);
-//            }
-//        });
-
+        startActivityForResult(intent, EDIT_MENTOR_REQUEST);
         startActivity(intent);
 
     }
+
 }
