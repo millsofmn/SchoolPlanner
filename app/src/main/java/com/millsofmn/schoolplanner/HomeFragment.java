@@ -27,7 +27,7 @@ public class HomeFragment extends Fragment {
         btnNavMentors.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), MentorActivity.class);
+                Intent intent = new Intent(getActivity(), MentorListActivity.class);
                 startActivity(intent);
             }
         });

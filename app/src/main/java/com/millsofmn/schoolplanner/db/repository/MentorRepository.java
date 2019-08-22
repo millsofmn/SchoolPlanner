@@ -40,7 +40,7 @@ public class MentorRepository {
         new updateAsyncTask(dao).execute(entity);
     }
 
-    public Mentor findById(int id){
+    public LiveData<Mentor> findById(int id){
         return dao.findById(id);
     }
 

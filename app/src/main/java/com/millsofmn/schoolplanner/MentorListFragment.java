@@ -1,6 +1,7 @@
 package com.millsofmn.schoolplanner;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,6 +55,17 @@ public class MentorListFragment extends Fragment implements MentorListAdapter.On
 
     @Override
     public void onMentorClick(int position) {
+        Intent intent = new Intent(getActivity(), MentorActivity.class);
+        intent.putExtra(MentorActivity.MENTOR_SELECTED_ID_EXTRA, mentorListAdapter.getSelectedMentor(position).mentor.getId());
+
+//        mentorViewModel.findById(mentorListAdapter.getId(position)).observe(this, new Observer<Mentor>() {
+//            @Override
+//            public void onChanged(Mentor mentor) {
+//                intent.putExtra(MentorActivity.MENTOR_SELECTED_EXTRA, mentor);
+//            }
+//        });
+
+        startActivity(intent);
 
     }
 }

@@ -28,7 +28,7 @@ public interface MentorDao {
     LiveData<List<Mentor>> getAll();
 
     @Query("SELECT * FROM mentor WHERE id = :id")
-    Mentor findById(int id);
+    LiveData<Mentor> findById(int id);
 
     @Query("DELETE FROM mentor")
     void deleteAll();

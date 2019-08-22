@@ -45,4 +45,7 @@ public class MentorViewModel extends AndroidViewModel {
         return mentorRepository.findMentorWith();
     }
 
+    public LiveData<Mentor> findById(int id){
+        return mentorRepository.findById(id);
+    }
 }

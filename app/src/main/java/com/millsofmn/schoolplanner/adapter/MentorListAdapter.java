@@ -98,6 +98,10 @@ public class MentorListAdapter extends RecyclerView.Adapter<MentorListAdapter.Vi
         }
     }
 
+    public int getId(int position){
+        return data.get(position).mentor.getId();
+    }
+
     public interface OnMentorListener {
         void onMentorClick(int position);
     }
