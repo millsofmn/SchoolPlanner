@@ -117,6 +117,7 @@ public static final String TAG = "++--CourseListFragment";
 
             String title = data.getStringExtra(CourseFragment.EXTRA_COURSE_TITLE);
             String status = data.getStringExtra(CourseFragment.EXTRA_COURSE_STATUS);
+            String notes = data.getStringExtra(CourseFragment.EXTRA_COURSE_NOTES);
             Long start = data.getLongExtra(CourseFragment.EXTRA_COURSE_START_DATE, 0);
             Long end = data.getLongExtra(CourseFragment.EXTRA_COURSE_END_DATE, 0);
 
@@ -127,6 +128,7 @@ public static final String TAG = "++--CourseListFragment";
                     .id(courseId)
                     .termId(termId)
                     .title(title)
+                    .notes(notes)
                     .startDate(startDate)
                     .endDate(endDate)
                     .status(status);
@@ -146,13 +148,14 @@ public static final String TAG = "++--CourseListFragment";
             String status = data.getStringExtra(CourseFragment.EXTRA_COURSE_STATUS);
             Long start = data.getLongExtra(CourseFragment.EXTRA_COURSE_START_DATE, 0);
             Long end = data.getLongExtra(CourseFragment.EXTRA_COURSE_END_DATE, 0);
-
+            String notes = data.getStringExtra(CourseFragment.EXTRA_COURSE_NOTES);
             Date startDate = new Date(start);
             Date endDate = new Date(end);
 
             Course newCourse = new Course()
                     .termId(termId)
                     .title(title)
+                    .notes(notes)
                     .startDate(startDate)
                     .endDate(endDate)
                     .status(status);

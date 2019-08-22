@@ -4,7 +4,6 @@ import com.millsofmn.schoolplanner.db.entity.Assessment;
 import com.millsofmn.schoolplanner.db.entity.Course;
 import com.millsofmn.schoolplanner.db.entity.CourseMentor;
 import com.millsofmn.schoolplanner.db.entity.Mentor;
-import com.millsofmn.schoolplanner.db.entity.Note;
 import com.millsofmn.schoolplanner.db.entity.Term;
 
 import java.util.ArrayList;
@@ -35,40 +34,20 @@ public class DatabaseSeed {
 
     public static List<Course> getCourses(){
         List<Course> courses = new ArrayList<>();
-        courses.add(new Course(1, 1,"Intro to Computers", "COMPLETED", false, getDate(-6), false, getDate(-5)));
-        courses.add(new Course(2, 1,"More About Computers", "COMPLETED", false, getDate(-5), false, getDate(-4)));
-        courses.add(new Course(3, 1,"Being Human", "COMPLETED", false, getDate(-4), false, getDate(-3)));
-        courses.add(new Course(4, 2,"Being Alien", "DROPPED", false, getDate(-3), false, getDate(-2)));
-        courses.add(new Course(5, 2,"Biology", "COMPLETED", false, getDate(-2), false, getDate(-1)));
-        courses.add(new Course(6, 2,"Dunking 101", "IN_PROGRESS", false, getDate(-1), false, getDate(0)));
-        courses.add(new Course(7, 3,"Android Development", "PLAN_TO_TAKE", false, getDate(0), false, getDate(1)));
-        courses.add(new Course(8, 3,"Drinking", "PLAN_TO_TAKE", false, getDate(1), false, getDate(2)));
-        courses.add(new Course(9, 3,"How to Pick Things", "PLAN_TO_TAKE", false, getDate(2), false, getDate(3)));
-        courses.add(new Course(10, 4,"Intro to Course Names", "PLAN_TO_TAKE", false, getDate(3), false, getDate(4)));
-        courses.add(new Course(11, 4,"Advance Computers", "PLAN_TO_TAKE", false, getDate(4), false, getDate(5)));
-        courses.add(new Course(12, 4,"Clapping on One and Three", "PLAN_TO_TAKE", false, getDate(5), false, getDate(6)));
+        courses.add(new Course(1, 1,"Intro to Computers", "COMPLETED", false, getDate(-6), false, getDate(-5), "Intro was a good cours"));
+        courses.add(new Course(2, 1,"More About Computers", "COMPLETED", false, getDate(-5), false, getDate(-4), "Intro was a hard cours"));
+        courses.add(new Course(3, 1,"Being Human", "COMPLETED", false, getDate(-4), false, getDate(-3), "More about comp"));
+        courses.add(new Course(4, 2,"Being Alien", "DROPPED", false, getDate(-3), false, getDate(-2), "Being human"));
+        courses.add(new Course(5, 2,"Biology", "COMPLETED", false, getDate(-2), false, getDate(-1), "Being Alien"));
+        courses.add(new Course(6, 2,"Dunking 101", "IN_PROGRESS", false, getDate(-1), false, getDate(0), "Almost alien"));
+        courses.add(new Course(7, 3,"Android Development", "PLAN_TO_TAKE", false, getDate(0), false, getDate(1), "Keeping it alien"));
+        courses.add(new Course(8, 3,"Drinking", "PLAN_TO_TAKE", false, getDate(1), false, getDate(2), "101 with donuts"));
+        courses.add(new Course(9, 3,"How to Pick Things", "PLAN_TO_TAKE", false, getDate(2), false, getDate(3), "android"));
+        courses.add(new Course(10, 4,"Intro to Course Names", "PLAN_TO_TAKE", false, getDate(3), false, getDate(4), "Drinking"));
+        courses.add(new Course(11, 4,"Advance Computers", "PLAN_TO_TAKE", false, getDate(4), false, getDate(5), "Hangover"));
+        courses.add(new Course(12, 4,"Clapping on One and Three", "PLAN_TO_TAKE", false, getDate(5), false, getDate(6), "pick things"));
 
         return courses;
-    }
-
-    public static List<Note> getNotes(){
-        List<Note> notes = new ArrayList<>();
-        notes.add(new Note(1, 1, "Intro was a good course."));
-        notes.add(new Note(2, 1, "Intro was a hard course"));
-        notes.add(new Note(3, 2, "More about comp"));
-        notes.add(new Note(4, 3, "Being human"));
-        notes.add(new Note(5, 4, "Being Alien"));
-        notes.add(new Note(6, 4, "Almost alien"));
-        notes.add(new Note(7, 4, "Keeping it alien"));
-        notes.add(new Note(8, 6, "101 with donuts"));
-        notes.add(new Note(9, 7, "android"));
-        notes.add(new Note(10, 8, "Drinking"));
-        notes.add(new Note(11, 8, "Hangover"));
-        notes.add(new Note(12, 9, "pick things"));
-        notes.add(new Note(13, 10, "intro course"));
-        notes.add(new Note(14, 10, "intra course"));
-        notes.add(new Note(15, 10, "course intro"));
-        return notes;
     }
 
     public static List<Assessment> getAssessments(){

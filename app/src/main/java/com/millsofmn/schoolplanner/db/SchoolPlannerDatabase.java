@@ -16,13 +16,11 @@ import com.millsofmn.schoolplanner.db.dao.AssessmentDao;
 import com.millsofmn.schoolplanner.db.dao.CourseDao;
 import com.millsofmn.schoolplanner.db.dao.CourseMentorDao;
 import com.millsofmn.schoolplanner.db.dao.MentorDao;
-import com.millsofmn.schoolplanner.db.dao.NoteDao;
 import com.millsofmn.schoolplanner.db.dao.TermDao;
 import com.millsofmn.schoolplanner.db.entity.Assessment;
 import com.millsofmn.schoolplanner.db.entity.Course;
 import com.millsofmn.schoolplanner.db.entity.CourseMentor;
 import com.millsofmn.schoolplanner.db.entity.Mentor;
-import com.millsofmn.schoolplanner.db.entity.Note;
 import com.millsofmn.schoolplanner.db.entity.Term;
 
 @Database(
@@ -31,7 +29,6 @@ import com.millsofmn.schoolplanner.db.entity.Term;
                 Course.class,
                 CourseMentor.class,
                 Mentor.class,
-                Note.class,
                 Term.class},
         version = 1,
         exportSchema = false)
@@ -46,8 +43,6 @@ public abstract class SchoolPlannerDatabase extends RoomDatabase {
     public abstract CourseMentorDao courseMentorDao();
 
     public abstract MentorDao mentorDao();
-
-    public abstract NoteDao noteDao();
 
     public abstract TermDao termDao();
 
@@ -84,7 +79,6 @@ public abstract class SchoolPlannerDatabase extends RoomDatabase {
         private final CourseDao courseDao;
         private final CourseMentorDao courseMentorDao;
         private final MentorDao mentorDao;
-        private final NoteDao noteDao;
         private final TermDao termDao;
 
         public PopulateDbAsync(SchoolPlannerDatabase database) {
@@ -92,7 +86,6 @@ public abstract class SchoolPlannerDatabase extends RoomDatabase {
             courseDao = database.courseDao();
             courseMentorDao = database.courseMentorDao();
             mentorDao = database.mentorDao();
-            noteDao = database.noteDao();
             termDao = database.termDao();
         }
 
@@ -110,10 +103,6 @@ public abstract class SchoolPlannerDatabase extends RoomDatabase {
 
             for (Course course : DatabaseSeed.getCourses()) {
                 courseDao.insert(course);
-            }
-
-            for (Note note : DatabaseSeed.getNotes()) {
-                noteDao.insert(note);
             }
 
             for (Assessment assessment : DatabaseSeed.getAssessments()) {

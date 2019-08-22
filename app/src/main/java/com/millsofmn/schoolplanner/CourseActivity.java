@@ -42,4 +42,5 @@ public class CourseActivity extends AppCompatActivity {
 
         viewPager.setAdapter(adapter);
     }
+
 }

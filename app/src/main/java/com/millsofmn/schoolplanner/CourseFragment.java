@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -52,6 +53,7 @@ public class CourseFragment extends Fragment implements DatePickerDialog.OnDateS
     public static final String EXTRA_COURSE_END_DATE = "course_end_date";
     public static final String EXTRA_COURSE_TERM_ID = "course_term_id";
     public static final String EXTRA_COURSE_STATUS = "course_status";
+    public static final String EXTRA_COURSE_NOTES = "course_notes";
 
     private Term thisTerm;
     private Course thisCourse;
@@ -59,6 +61,8 @@ public class CourseFragment extends Fragment implements DatePickerDialog.OnDateS
     private EditText editTextCourseTitle;
     private Button buttonStartDate;
     private Button buttonEndDate;
+    private ImageButton buttonShareNotes;
+    private EditText editTextNotes;
     private Spinner courseStatus;
     private ArrayAdapter<CharSequence> spinnerAdapter;
 
@@ -100,15 +104,33 @@ public class CourseFragment extends Fragment implements DatePickerDialog.OnDateS
             showDatePickerDialog();
         });
 
+        buttonShareNotes = view.findViewById(R.id.btn_course_notes_share);
+        buttonShareNotes.setOnClickListener(click -> {
+            sendNotes();
+        });
         courseStatus = view.findViewById(R.id.spinner_course_status);
         spinnerAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.course_statuses, R.layout.support_simple_spinner_dropdown_item);
         spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         courseStatus.setAdapter(spinnerAdapter);
 
+        editTextNotes = view.findViewById(R.id.et_course_notes);
+
         if (getIncomingIntent()) {
             setTermProperties();
         }
         return view;
+    }
+
+    private void sendNotes() {
+        String title = editTextCourseTitle.getText().toString();
+        String notes = editTextNotes.getText().toString();
+
+        String msg = "Here are my notes for course " + title + ":\n" + notes;
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, msg);
+        startActivity(intent);
     }
 
     @Override
@@ -122,6 +144,7 @@ public class CourseFragment extends Fragment implements DatePickerDialog.OnDateS
         buttonStartDate.setText(fmtDate.format(thisCourse.getStartDate()));
         buttonEndDate.setText(fmtDate.format(thisCourse.getEndDate()));
         courseStatus.setSelection(spinnerAdapter.getPosition(thisCourse.getStatus()));
+        editTextNotes.setText(thisCourse.getNotes());
     }
 
     private boolean getIncomingIntent() {
@@ -195,6 +218,7 @@ public class CourseFragment extends Fragment implements DatePickerDialog.OnDateS
                 Date startDate = fmtDate.parse(buttonStartDate.getText().toString());
                 Date endDate = fmtDate.parse(buttonEndDate.getText().toString());
                 String status = courseStatus.getSelectedItem().toString();
+                String notes = editTextNotes.getText().toString();
 
                 Intent intent = new Intent();
 
@@ -203,6 +227,7 @@ public class CourseFragment extends Fragment implements DatePickerDialog.OnDateS
                 intent.putExtra(EXTRA_COURSE_START_DATE, startDate.getTime());
                 intent.putExtra(EXTRA_COURSE_END_DATE, endDate.getTime());
                 intent.putExtra(EXTRA_COURSE_STATUS, status);
+                intent.putExtra(EXTRA_COURSE_NOTES, notes);
 
                 if (thisCourse != null) {
                     intent.putExtra(EXTRA_COURSE_ID, thisCourse.getId());

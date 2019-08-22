@@ -47,10 +47,13 @@ public class Course implements Parcelable {
     @ColumnInfo(name = "end_date")
     private Date endDate;
 
+    @ColumnInfo(name = "notes")
+    private String notes;
+
     public Course() {
     }
 
-    public Course(int termId, @NonNull String title, @NonNull String status, boolean alertOnStartDate, Date startDate, boolean alertOnEndDate, Date endDate) {
+    public Course(int termId, @NonNull String title, @NonNull String status, boolean alertOnStartDate, Date startDate, boolean alertOnEndDate, Date endDate, String notes) {
         this.termId = termId;
         this.title = title;
         this.status = status;
@@ -58,9 +61,10 @@ public class Course implements Parcelable {
         this.startDate = startDate;
         this.alertOnEndDate = alertOnEndDate;
         this.endDate = endDate;
+        this.notes = notes;
     }
 
-    public Course(int id, int termId, @NonNull String title, @NonNull String status, boolean alertOnStartDate, Date startDate, boolean alertOnEndDate, Date endDate) {
+    public Course(int id, int termId, @NonNull String title, @NonNull String status, boolean alertOnStartDate, Date startDate, boolean alertOnEndDate, Date endDate, String notes) {
         this.id = id;
         this.termId = termId;
         this.title = title;
@@ -69,6 +73,7 @@ public class Course implements Parcelable {
         this.startDate = startDate;
         this.alertOnEndDate = alertOnEndDate;
         this.endDate = endDate;
+        this.notes = notes;
     }
 
     protected Course(Parcel in) {
@@ -88,6 +93,7 @@ public class Course implements Parcelable {
         } else {
             endDate = new Date(in.readLong());
         }
+        notes = in.readString();
     }
 
     public static final Creator<Course> CREATOR = new Creator<Course>() {
@@ -127,6 +133,7 @@ public class Course implements Parcelable {
             parcel.writeByte((byte) 1);
             parcel.writeLong(endDate.getTime());
         }
+        parcel.writeString(notes);
     }
 
     public Course id(int id) {
@@ -166,6 +173,11 @@ public class Course implements Parcelable {
 
     public Course endDate(Date endDate) {
         this.endDate = endDate;
+        return this;
+    }
+
+    public Course notes(String notes){
+        this.notes = notes;
         return this;
     }
 
@@ -233,5 +245,28 @@ public class Course implements Parcelable {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "id=" + id +
+                ", termId=" + termId +
+                ", title='" + title + '\'' +
+                ", status='" + status + '\'' +
+                ", alertOnStartDate=" + alertOnStartDate +
+                ", startDate=" + startDate +
+                ", alertOnEndDate=" + alertOnEndDate +
+                ", endDate=" + endDate +
+                ", notes='" + notes + '\'' +
+                '}';
     }
 }
